@@ -8,6 +8,10 @@ import java.util.UUID;
  * el pull request será rechazado.
  * ----- Mensaje genérico -----
  * 
+ * ----- Mensaje para VISITANTES -----
+ * 
+ * ----- Mensaje para VISITANTES -----
+ * 
  * INSERTA TU PROPIO COMENTARIO DE LA CLASE.
  */
 public class Usuario {
