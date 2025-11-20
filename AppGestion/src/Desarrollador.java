@@ -13,5 +13,5 @@
  * INSERTA TU PROPIO COMENTARIO DE LA CLASE.
  */
 public class Desarrollador extends Usuario {
-
+    
 }
