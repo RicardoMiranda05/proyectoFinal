@@ -1,7 +1,7 @@
-package Usuarios;
+package usuarios;
 import java.util.UUID;
 
-import Excepciones.UsuarioException;
+import excepciones.UsuarioException;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.

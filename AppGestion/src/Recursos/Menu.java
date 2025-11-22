@@ -1,4 +1,4 @@
-package Recursos;
+package recursos;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.

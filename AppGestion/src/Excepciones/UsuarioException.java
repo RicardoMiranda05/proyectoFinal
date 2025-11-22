@@ -1,4 +1,4 @@
-package Excepciones;
+package excepciones;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
