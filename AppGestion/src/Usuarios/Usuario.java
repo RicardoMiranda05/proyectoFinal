@@ -96,7 +96,9 @@ public abstract class Usuario implements Serializable{
             return true;
         if (user == null)
             return false;
-        return id == user.id;
+        return (id == user.id) || 
+                (nickname == user.nickname) ||
+                (email == user.email);
     }
     /* ----- UTILERÍA ----- */
 }

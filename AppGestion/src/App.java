@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import usuarios.*;
@@ -78,6 +77,31 @@ class MenuAdministrador extends Menu {
     }
     /* ----- CONSTRUCTOR ----- */
 }
+class MenuRoles extends Menu {
+    public static final char OPCION_ADMINISTRADOR = '1';
+    public static final char OPCION_DESARROLLADOR = '2';
+    public static final char OPCION_INVITADO = '3';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuRoles () {
+        super("¿Qué rol desempeñará?", getDiccionarioOpciones());
+        
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_ADMINISTRADOR,
+                                    OPCION_DESARROLLADOR,
+                                    OPCION_INVITADO};
+        String[] etiquetas = {"Administrador",
+                                "Desarrollador",
+                                "Invitado"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
+
 /**
  * Menú para el desarrollador.
  */
@@ -146,16 +170,69 @@ public class App {
                 /* solicitamos y validamos credenciales. */
                 if (validaCredenciales(s)) {
                     switch (usuarioActual.getTipo()) {
-
                         case TipoUsuario.ADMINISTRADOR:
-                            Menu menuAdmin = new Menu(null, null);
+                            MenuAdministrador menuAdmin = new MenuAdministrador();
+                            System.out.println(menuAdmin);
+                            menuAdmin.setEleccion(s.nextLine().charAt(0));
+                            switch (menuAdmin.getEleccion()) {
+                                case MenuAdministrador.OPCION_AGREGAR_USUARIO:
+                                    System.out.println("Nombre: ");
+                                    String nombre = s.next();
+                                    System.out.println("Nombre de usuario: ");
+                                    String nickname = s.next();
+                                    System.out.println("Correo electrónico: ");
+                                    String email = s.next();
+                                    System.out.println("Contraseña: ");
+                                    String password = s.next();
+                                    String rol;
+                                    MenuRoles menuRoles = new MenuRoles();
+                                    System.err.println(menuRoles);
+                                    menuRoles.setEleccion(s.nextLine().charAt(0));
+                                    switch (menuRoles.getEleccion()) {
+                                        case MenuRoles.OPCION_ADMINISTRADOR:
+                                            rol = "Administrador";
+                                            break;
+                                        case MenuRoles.OPCION_DESARROLLADOR:
+                                            rol = "Desarrollador";
+                                            break;
+                                        case MenuRoles.OPCION_INVITADO:
+                                            rol = "Desarrollador";
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    ((Administrador) usuarioActual).crearUsuario(nombre, nickname, email, password, null);
+                                    break;
+                                case MenuAdministrador.OPCION_CREAR_TAREA:
+                                    
+                                    break;
+                                case MenuAdministrador.OPCION_DESPLEGAR_TAREAS:
+                                    
+                                    break;
+                                case MenuAdministrador.OPCION_FILTRAR_TAREAS:
+                                    
+                                    break;
+                                case MenuAdministrador.OPCION_ACTUALIZAR_TAREAS:
+                                    
+                                    break;
+                                case MenuAdministrador.OPCION_ELIMINAR_TAREAS:
+                                    
+                                    break;
+                                default:
+                                    break;
+                            }
 
                             break;
                         case TipoUsuario.DESARROLLADOR:
-                            
+                            MenuDesarrollador menuDes = new MenuDesarrollador();
+                            System.out.println(menuDes);
+                            menuDes.setEleccion(s.nextLine().charAt(0));
                             break;
                         case TipoUsuario.INVITADO:
-                            
+                            MenuInvitado menuInv = new MenuInvitado();
+                            System.out.println(menuInv);
+                            menuInv.setEleccion(s.nextLine().charAt(0));
                             break;
                         default:
                             break;
@@ -188,7 +265,6 @@ public class App {
                 /* Optimización de búsqueda */
                 if (usuario.getEmail().equals(emailNickname) || usuario.getNickname().equals(emailNickname)) {
                     if (usuario.getPassword() == password) {
-                        usuarioActual = usuario;
                         return true;
                     } else {
                         return false;

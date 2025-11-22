@@ -1,4 +1,6 @@
 import java.util.UUID;
+import usuarios.*;
+
 
 /**
  * ----- Mensaje genérico -----
