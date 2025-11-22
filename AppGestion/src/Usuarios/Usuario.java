@@ -1,5 +1,7 @@
-import java.util.Scanner;
+package Usuarios;
 import java.util.UUID;
+
+import Excepciones.UsuarioException;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
@@ -21,7 +23,7 @@ public class Usuario {
     private String email;
     private String password;
 
-    private ListaTareas tareasAsignadas;
+    //private ListaTareas tareasAsignadas; TODO: Declaralarla cuando se metan Tareas y ListaTareas en un paquete.
 
     /**
      * Ve las tareas asignadas de user.
@@ -31,7 +33,7 @@ public class Usuario {
         System.out.println("Método genérico para ver tareas.");
     }
     /* ----- CONSTRUCTOR ----- */
-    protected Usuario (String nombre, String nickname, String email, String password) {
+    protected Usuario(String nombre, String nickname, String email, String password) {
         super();
         id = UUID.randomUUID().toString();
         this.nombre = nombre;
@@ -44,9 +46,6 @@ public class Usuario {
     /* ----- ACCESO ----- */
     public String getId() {
         return id;
-    }
-    public void setId(String id) {
-        System.out.println("El ID no puede ser sobreescrito.");
     }
     public String getNombre() {
         return nombre;

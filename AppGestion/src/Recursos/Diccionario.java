@@ -1,3 +1,4 @@
+package Recursos;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.

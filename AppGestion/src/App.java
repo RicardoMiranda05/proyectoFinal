@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import Recursos.Diccionario;
+import Recursos.Menu;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.

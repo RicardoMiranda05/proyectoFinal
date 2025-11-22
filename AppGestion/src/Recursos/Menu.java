@@ -1,3 +1,4 @@
+package Recursos;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
@@ -10,6 +11,7 @@
  * 
  * ----- Mensaje para VISITANTES -----
  */
+
 /**
  * Esta clase se encarga de manejar cada tipo diferente de menú que sale en pantalla,
  * ya sea para iniciar sesión, elegir el modo de ingreso del usuario a la app, etc. 
