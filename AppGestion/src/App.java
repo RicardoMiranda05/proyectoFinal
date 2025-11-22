@@ -5,10 +5,10 @@ import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Scanner;
 
+import excepciones.UsuarioExisteException;
+import maquinas.EstadosApp;
 import usuarios.*;
-import recursos.Diccionario;
-import recursos.Menu;
-import recursos.TipoUsuario;
+import recursos.*;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
@@ -27,8 +27,7 @@ class MenuInicio extends Menu {
     public static final char OPCION_INICIAR_SESION = '1';
     /* ----- CONSTRUCTOR ----- */
     public MenuInicio () {
-        super("Seleccione una de las siguientes opciones:", getDiccionarioOpciones());
-        
+        super(getDiccionarioOpciones());
     }
     /**
      * Construye el diccionario de opciones para este menú.
@@ -41,10 +40,57 @@ class MenuInicio extends Menu {
     }
     /* ----- CONSTRUCTOR ----- */
 }
+class MenuOperacion extends Menu {
+    public static final char OPCION_REPETIR= '1';
+    public static final char OPCION_CANCELAR = '2';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuOperacion () {
+        super(getDiccionarioOpciones());
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_REPETIR, OPCION_CANCELAR};
+        String[] etiquetas = {"Volver a intentar", "Cancelar operación"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
+class MenuConfirmacion extends Menu {
+    public static final char OPCION_CONFIRMAR = '1';
+    public static final char OPCION_CANCELAR = '2';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuConfirmacion () {
+        super(getDiccionarioOpciones());
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_CONFIRMAR, OPCION_CANCELAR};
+        String[] etiquetas = {"Confirmar", "Cancelar"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
+/**
+ * 
+ */
+class MenuUsuario extends Menu {
+    public static final char OPCION_CERRAR_SESION = 'c';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuUsuario (Diccionario<Character, String> opciones) {
+        super(opciones);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
 /**
  * Menú para el administrador.
  */
-class MenuAdministrador extends Menu {
+class MenuAdministrador extends MenuUsuario {
     public static final char OPCION_AGREGAR_USUARIO = '1';
     public static final char OPCION_CREAR_TAREA = '2';
     public static final char OPCION_DESPLEGAR_TAREAS = '3';
@@ -53,8 +99,7 @@ class MenuAdministrador extends Menu {
     public static final char OPCION_ELIMINAR_TAREAS = '6';
     /* ----- CONSTRUCTOR ----- */
     public MenuAdministrador () {
-        super("Seleccione la acción que desea realizar:", getDiccionarioOpciones());
-        
+        super(getDiccionarioOpciones());
     }
     /**
      * Construye el diccionario de opciones para este menú.
@@ -66,13 +111,14 @@ class MenuAdministrador extends Menu {
                                     OPCION_DESPLEGAR_TAREAS,
                                     OPCION_FILTRAR_TAREAS,
                                     OPCION_ACTUALIZAR_TAREAS,
-                                    OPCION_ELIMINAR_TAREAS};
+                                    OPCION_ELIMINAR_TAREAS,
+                                    OPCION_CERRAR_SESION};
         String[] etiquetas = {"Agregar un usuario nuevo",
                                 "Crear tarea nueva",
                                 "Desplegar tareas",
                                 "Filtrar tareas",
                                 "Actualizar tareas",
-                                "Eliminar tarea"};
+                                "Eliminar tareas"};
         return new Diccionario<>(selecciones, etiquetas);
     }
     /* ----- CONSTRUCTOR ----- */
@@ -83,7 +129,7 @@ class MenuRoles extends Menu {
     public static final char OPCION_INVITADO = '3';
     /* ----- CONSTRUCTOR ----- */
     public MenuRoles () {
-        super("¿Qué rol desempeñará?", getDiccionarioOpciones());
+        super(getDiccionarioOpciones());
         
     }
     /**
@@ -105,12 +151,13 @@ class MenuRoles extends Menu {
 /**
  * Menú para el desarrollador.
  */
-class MenuDesarrollador extends Menu {
+class MenuDesarrollador extends MenuUsuario {
     public static final char OPCION_DESPLEGAR_TAREAS = '1';
     public static final char OPCION_FILTRAR_TAREAS = '2';
+    public static final char OPCION_ACTUALIZAR_TAREAS = '3';
     /* ----- CONSTRUCTOR ----- */
     public MenuDesarrollador () {
-        super("Seleccione la acción que desea realizar:", getDiccionarioOpciones());
+        super(getDiccionarioOpciones());
         
     }
     /**
@@ -119,9 +166,13 @@ class MenuDesarrollador extends Menu {
      */
     private static Diccionario<Character,String> getDiccionarioOpciones() {
         Character[] selecciones = {OPCION_DESPLEGAR_TAREAS,
-                                    OPCION_FILTRAR_TAREAS};
+                                    OPCION_FILTRAR_TAREAS,
+                                    OPCION_ACTUALIZAR_TAREAS,
+                                    OPCION_CERRAR_SESION};
         String[] etiquetas = {"Desplegar tareas",
-                                "Filtrar tareas"};
+                                "Filtrar tareas",
+                                "Actualizar tareas",
+                                "Cerrar sesión"};
         return new Diccionario<>(selecciones, etiquetas);
     }
     /* ----- CONSTRUCTOR ----- */
@@ -129,14 +180,14 @@ class MenuDesarrollador extends Menu {
 /**
  * Menú para el invitado.
  */
-class MenuInvitado extends Menu {
+class MenuInvitado extends MenuUsuario {
     public static final char OPCION_CREAR_TAREA = '1';
     public static final char OPCION_DESPLEGAR_TAREAS = '2';
     public static final char OPCION_FILTRAR_TAREAS = '3';
     public static final char OPCION_ACTUALIZAR_TAREAS = '4';
     /* ----- CONSTRUCTOR ----- */
     public MenuInvitado () {
-        super("Seleccione la acción que desea realizar:", getDiccionarioOpciones());
+        super(getDiccionarioOpciones());
         
     }
     /**
@@ -147,11 +198,13 @@ class MenuInvitado extends Menu {
         Character[] selecciones = {OPCION_CREAR_TAREA,
                                     OPCION_DESPLEGAR_TAREAS,
                                     OPCION_FILTRAR_TAREAS,
-                                    OPCION_ACTUALIZAR_TAREAS};
+                                    OPCION_ACTUALIZAR_TAREAS,
+                                    OPCION_CERRAR_SESION};
         String[] etiquetas = {"Crear tarea nueva",
                                 "Desplegar tareas",
                                 "Filtrar tareas",
-                                "Actualizar tareas"};
+                                "Actualizar tareas",
+                                "Cerrar sesión"};
         return new Diccionario<>(selecciones, etiquetas);
     }
     /* ----- CONSTRUCTOR ----- */
@@ -159,90 +212,157 @@ class MenuInvitado extends Menu {
 
 public class App {
     public static Usuario usuarioActual; // El usuario que corre la App.
+    public static EstadosApp estadoActual;
+    public static final EstadosApp estadoIncial = EstadosApp.INICIO; 
     public static void main(String[] args) throws Exception {
         Scanner s = new Scanner(System.in);
-        MenuInicio menuInicio = new MenuInicio();
+        estadoActual = estadoIncial;
+        /* ----- Máquina de estados de la App ----- */
         do {
-            System.out.println(menuInicio);
-            menuInicio.setEleccion(s.nextLine().charAt(0));  //TODO: manejo de excepciones.
-
-            if (menuInicio.getEleccion() == MenuInicio.OPCION_INICIAR_SESION) {
-                /* solicitamos y validamos credenciales. */
-                if (validaCredenciales(s)) {
-                    switch (usuarioActual.getTipo()) {
-                        case TipoUsuario.ADMINISTRADOR:
-                            MenuAdministrador menuAdmin = new MenuAdministrador();
-                            System.out.println(menuAdmin);
-                            menuAdmin.setEleccion(s.nextLine().charAt(0));
-                            switch (menuAdmin.getEleccion()) {
-                                case MenuAdministrador.OPCION_AGREGAR_USUARIO:
-                                    System.out.println("Nombre: ");
-                                    String nombre = s.next();
-                                    System.out.println("Nombre de usuario: ");
-                                    String nickname = s.next();
-                                    System.out.println("Correo electrónico: ");
-                                    String email = s.next();
-                                    System.out.println("Contraseña: ");
-                                    String password = s.next();
-                                    String rol;
-                                    MenuRoles menuRoles = new MenuRoles();
-                                    System.err.println(menuRoles);
-                                    menuRoles.setEleccion(s.nextLine().charAt(0));
-                                    switch (menuRoles.getEleccion()) {
-                                        case MenuRoles.OPCION_ADMINISTRADOR:
-                                            rol = "Administrador";
-                                            break;
-                                        case MenuRoles.OPCION_DESARROLLADOR:
-                                            rol = "Desarrollador";
-                                            break;
-                                        case MenuRoles.OPCION_INVITADO:
-                                            rol = "Desarrollador";
-                                            break;
-                                        default:
-                                            break;
-                                    }
-
-                                    ((Administrador) usuarioActual).crearUsuario(nombre, nickname, email, password, null);
-                                    break;
-                                case MenuAdministrador.OPCION_CREAR_TAREA:
-                                    
-                                    break;
-                                case MenuAdministrador.OPCION_DESPLEGAR_TAREAS:
-                                    
-                                    break;
-                                case MenuAdministrador.OPCION_FILTRAR_TAREAS:
-                                    
-                                    break;
-                                case MenuAdministrador.OPCION_ACTUALIZAR_TAREAS:
-                                    
-                                    break;
-                                case MenuAdministrador.OPCION_ELIMINAR_TAREAS:
-                                    
-                                    break;
-                                default:
-                                    break;
-                            }
-
+            switch (estadoActual) {
+                /* ----- Lógica del estado de inicio ----- */
+                case EstadosApp.INICIO:
+                    MenuInicio menuInicio = new MenuInicio();
+                    System.out.println("Seleccione la opción deseada: ");
+                    System.out.println(menuInicio);
+                    menuInicio.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones.
+                    /* ----- CAMBIO DE ESTADO ----- */
+                    switch (menuInicio.getEleccion()) {
+                        case MenuInicio.OPCION_INICIAR_SESION:
+                            estadoActual = EstadosApp.INICIO_SESION;
                             break;
-                        case TipoUsuario.DESARROLLADOR:
-                            MenuDesarrollador menuDes = new MenuDesarrollador();
-                            System.out.println(menuDes);
-                            menuDes.setEleccion(s.nextLine().charAt(0));
-                            break;
-                        case TipoUsuario.INVITADO:
-                            MenuInvitado menuInv = new MenuInvitado();
-                            System.out.println(menuInv);
-                            menuInv.setEleccion(s.nextLine().charAt(0));
+                        case MenuInicio.OPCION_SALIR:
+                            estadoActual = EstadosApp.SALIR;
                             break;
                         default:
                             break;
-                    } 
-                } else {
-                    System.out.println("Las credenciales son incorrectas.");
-                    // TODO: Si da tiempo, hacer un menú para volver a intentar o salir.
-                }
+                    }
+                    break;
+                /* ----- Lógica del estado de inicio de sesión ----- */
+                case EstadosApp.INICIO_SESION:
+                    if (validaCredenciales(s)) {
+                        System.out.println("Credenciales válidas." +
+                                            "\n¡Bienvenido" + usuarioActual.getNickname() + "!");
+                        /* ----- CAMBIO DE ESTADO ----- */
+                        estadoActual = EstadosApp.USO_GENERAL;
+                    } else {
+                        System.out.println("Las credenciales ingresadas no son válidas.");
+                        MenuOperacion menuOperacion = new MenuOperacion();
+                        System.out.println(menuOperacion);
+                        menuOperacion.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
+                        /* ----- CAMBIO DE ESTADO ----- */
+                        switch (menuOperacion.getEleccion()) {
+                            case MenuOperacion.OPCION_REPETIR:
+                                // Mantengo el estado actual.
+                                break;
+                            case MenuOperacion.OPCION_CANCELAR:
+                                estadoActual = EstadosApp.INICIO;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                /* ----- Lógica del estado de uso general de la app ----- */
+                case EstadosApp.USO_GENERAL:
+                    MenuUsuario menuUsuario = null;
+                    switch (usuarioActual.getTipo()) {
+                        case TipoUsuario.ADMINISTRADOR:
+                            MenuAdministrador menuAdmin = new MenuAdministrador();
+                            System.out.println("Seleccione la acción que desea realizar:");
+                            System.out.println(menuAdmin);
+                            menuAdmin.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
+                            /* ----- CAMBIO DE ESTADO ----- */
+                            switch (menuAdmin.getEleccion()) {
+                                case MenuAdministrador.OPCION_AGREGAR_USUARIO:
+                                    estadoActual = EstadosApp.AGREGAR_USUARIO;
+                                    break;
+                                case MenuAdministrador.OPCION_CREAR_TAREA:
+                                    estadoActual = EstadosApp.CREAR_TAREA;
+                                    break;
+                                case MenuAdministrador.OPCION_DESPLEGAR_TAREAS:
+                                    estadoActual = EstadosApp.DESPLEGAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_FILTRAR_TAREAS:
+                                    estadoActual = EstadosApp.FILTRAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_ACTUALIZAR_TAREAS:
+                                    estadoActual = EstadosApp.ACTUALIZAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_ELIMINAR_TAREAS:
+                                    estadoActual = EstadosApp.ELIMINAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_CERRAR_SESION:
+                                    estadoActual = EstadosApp.CERRAR_SESION;
+                                    break;
+                            }
+                            break;
+                        case TipoUsuario.DESARROLLADOR:
+                            MenuDesarrollador menuDes = new MenuDesarrollador();
+                            System.out.println("Seleccione la acción que desea realizar:");
+                            System.out.println(menuDes);
+                            menuDes.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
+                            /* ----- CAMBIO DE ESTADO ----- */
+                            switch (menuDes.getEleccion()) {
+                                case MenuAdministrador.OPCION_CREAR_TAREA:
+                                    estadoActual = EstadosApp.CREAR_TAREA;
+                                    break;
+                                case MenuAdministrador.OPCION_DESPLEGAR_TAREAS:
+                                    estadoActual = EstadosApp.DESPLEGAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_FILTRAR_TAREAS:
+                                    estadoActual = EstadosApp.FILTRAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_ACTUALIZAR_TAREAS:
+                                    estadoActual = EstadosApp.ACTUALIZAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_CERRAR_SESION:
+                                    estadoActual = EstadosApp.CERRAR_SESION;
+                                    break;
+                            }
+                        case TipoUsuario.INVITADO:
+                            MenuInvitado menuInv = new MenuInvitado();
+                            System.out.println("Seleccione la acción que desea realizar:");
+                            System.out.println(menuInv);
+                            menuInv.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
+                            /* ----- CAMBIO DE ESTADO ----- */
+                            switch (menuInv.getEleccion()) {
+                                case MenuAdministrador.OPCION_DESPLEGAR_TAREAS:
+                                    estadoActual = EstadosApp.DESPLEGAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_FILTRAR_TAREAS:
+                                    estadoActual = EstadosApp.FILTRAR_TAREAS;
+                                    break;
+                                case MenuAdministrador.OPCION_CERRAR_SESION:
+                                    estadoActual = EstadosApp.CERRAR_SESION;
+                                    break;
+                            }
+                    }
+                    break;
+                /* ----- ESTADOS PARA LAS FUNCIONES DEL USUARIO ----- */
+                case EstadosApp.AGREGAR_USUARIO:
+                    if (agregaUsuario(s)) {
+                        System.out.println("Se ha agregado con éxito al usuario.");
+                        estadoActual = EstadosApp.USO_GENERAL;
+                    } else if (!repetirOperacion(s)) {
+                        estadoActual = EstadosApp.USO_GENERAL;
+                    }
+                    break;
+                case EstadosApp.CREAR_TAREA:
+                    break;
+                case EstadosApp.DESPLEGAR_TAREAS:
+                    break;
+                case EstadosApp.FILTRAR_TAREAS:
+                    break;
+                case EstadosApp.ACTUALIZAR_TAREAS:
+                    break;
+                case EstadosApp.ELIMINAR_TAREAS:
+                    break;
+                case EstadosApp.CERRAR_SESION:
+                    estadoActual = EstadosApp.INICIO_SESION;
+                    break;
             }
-        } while (menuInicio.getEleccion() != MenuInicio.OPCION_SALIR);
+        } while (!estadoActual.equals(EstadosApp.SALIR));
         s.close();
     }
     /**
@@ -253,8 +373,8 @@ public class App {
      * si no.
      */
     public static boolean validaCredenciales(Scanner s) {
-        System.out.println("Ingrese su correo/nickname y su contraseña.");
-        System.out.println("Correo/nickname: ");
+        System.out.println("Ingrese su correo/nombre de usuario y su contraseña.");
+        System.out.println("Correo/Nombre de usuario: ");
         String emailNickname = s.next(); //TODO: manejo de excepciones.
         System.out.println("Contraseña: ");
         String password = s.next(); //TODO: manejo de excepciones.
@@ -276,5 +396,77 @@ public class App {
             e.printStackTrace();
         }
         return false;
+    }
+    /**
+     * Verifica si se desea repetir la operación reciente.
+     * @param s Teclado con el que se comunica el usuario.
+     * @return {@code true} si el usuario desea repetir la operación y {@code false} si no.
+     */
+    public static boolean repetirOperacion(Scanner s) {
+        MenuOperacion menuOperacion = new MenuOperacion();
+        System.out.println(menuOperacion);
+        menuOperacion.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
+        if (menuOperacion.getEleccion() == MenuOperacion.OPCION_REPETIR) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Solicita los datos de un usuario para agregarlo al achivo usuarios.dat e indica si la
+     * operación se realizó con éxito-
+     * @param s Teclado con el que el usuario se comunica.
+     * @return {@code true} si se agregó al usuario al archivo usuarios.dat y {@code false} si no.
+     */
+    public static boolean agregaUsuario(Scanner s) {
+        System.out.println("Nombre: ");
+        String nombre = s.next();
+        System.out.println("Nombre de usuario: ");
+        String nickname = s.next();
+        System.out.println("Correo electrónico: ");
+        String email = s.next();
+        System.out.println("Contraseña: ");
+        String password = s.next();
+        TipoUsuario rol;
+        MenuRoles menuRoles = new MenuRoles();
+        System.out.println("¿Qué rol le asigna?");
+        System.out.println(menuRoles);
+        menuRoles.setEleccion(s.nextLine().charAt(0));
+        switch (menuRoles.getEleccion()) {
+            case MenuRoles.OPCION_ADMINISTRADOR:
+                rol = TipoUsuario.ADMINISTRADOR;
+                break;
+            case MenuRoles.OPCION_DESARROLLADOR:
+                rol = TipoUsuario.DESARROLLADOR;
+                break;
+            case MenuRoles.OPCION_INVITADO:
+                rol = TipoUsuario.INVITADO;
+                break;
+        }
+        MenuConfirmacion menuConfirmacion = new MenuConfirmacion();
+        System.out.println("¿Desea confirmar la operación?");
+        System.out.println(menuConfirmacion);
+        menuConfirmacion.setEleccion(s.nextLine().charAt(0));
+        try {
+            switch (menuConfirmacion.getEleccion()) {
+            case MenuConfirmacion.OPCION_CONFIRMAR:
+                ((Administrador) usuarioActual).agregarUsuario(nombre, nickname, email, password, rol);
+                return true;
+            case MenuConfirmacion.OPCION_CANCELAR:
+                return false;
+            }
+        } catch (UsuarioExisteException uee) {
+            String datoDuplicado;
+            switch (uee.getDatoDuplicado()) {
+                case "nickname":
+                    datoDuplicado = "nombre de usuario";
+                    break;
+                case "email":
+                    datoDuplicado = "correo electrónico";
+                    break;
+            }
+            System.out.println("El " + datoDuplicado + " ya ha sido registrado.");
+            return false;
+        }
+        
     }
 }

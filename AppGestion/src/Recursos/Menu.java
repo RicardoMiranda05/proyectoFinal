@@ -18,7 +18,6 @@ package recursos;
  */
 public class Menu {
     public static final char OPCION_SALIR = 's';
-    private final String INDICACIONES;
     private final Diccionario<Character,String> OPCIONES;
 
     private char eleccion;
@@ -26,22 +25,10 @@ public class Menu {
     /* ----- CONSTRUCTOR ----- */
     public Menu (Diccionario<Character, String> opciones) {
         super();
-        INDICACIONES = "Seleccione una de las siguientes opciones:";
-        this.OPCIONES = opciones;
-    }
-    public Menu (String indicaciones, Diccionario<Character, String> opciones) {
-        super();
-        INDICACIONES = indicaciones;
         this.OPCIONES = opciones;
     }
     /* ----- CONSTRUCTOR ----- */
     /* ----- ACCESO ----- */
-    public String getIndicaciones() {
-        return INDICACIONES;
-    }
-    public void setIndicaciones(String indicaciones) {
-        System.out.println("INDICACIONES no puede ser modificado.");
-    }
     public Diccionario<Character, String> getOpciones() {
         return OPCIONES;
     }
@@ -58,7 +45,7 @@ public class Menu {
     /* ----- UTILERÍA ----- */
     @Override
     public String toString() {
-        String salida = INDICACIONES + "\n";
+        String salida = "";
         for (int i = 0; i < OPCIONES.getSize(); i++) {
             salida += OPCIONES.getKey(i) + ") " + OPCIONES.getValue(i) + ".\n";
         }
