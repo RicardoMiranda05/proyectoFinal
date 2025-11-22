@@ -1,7 +1,8 @@
 package usuarios;
+import java.io.Serializable;
 import java.util.UUID;
-
 import excepciones.UsuarioException;
+import recursos.TipoUsuario;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
@@ -16,7 +17,7 @@ import excepciones.UsuarioException;
  * Representa a un usuario con datos de ingreso a la aplicación.
  * @author Brayan Montiel Ramírez.
  */
-public class Usuario {
+public abstract class Usuario implements Serializable{
     private final String id;
     private String nombre;
     private String nickname;
@@ -24,14 +25,16 @@ public class Usuario {
     private String password;
 
     //private ListaTareas tareasAsignadas; TODO: Declaralarla cuando se metan Tareas y ListaTareas en un paquete.
-
+    
     /**
      * Ve las tareas asignadas de user.
      * @param user Nombre del usuario de quien se consultan las tareas.
      */
-    public void verTareas(Usuario user) {
-        System.out.println("Método genérico para ver tareas.");
-    }
+    public abstract void verTareas(Usuario user);
+    /**
+     * @return El tipo de usuario de {@code this}.
+     */
+    public abstract TipoUsuario getTipo();
     /* ----- CONSTRUCTOR ----- */
     protected Usuario(String nombre, String nickname, String email, String password) {
         super();

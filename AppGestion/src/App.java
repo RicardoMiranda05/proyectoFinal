@@ -1,7 +1,15 @@
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import usuarios.*;
 import recursos.Diccionario;
 import recursos.Menu;
+import recursos.TipoUsuario;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
@@ -34,34 +42,163 @@ class MenuInicio extends Menu {
     }
     /* ----- CONSTRUCTOR ----- */
 }
+/**
+ * Menú para el administrador.
+ */
+class MenuAdministrador extends Menu {
+    public static final char OPCION_AGREGAR_USUARIO = '1';
+    public static final char OPCION_CREAR_TAREA = '2';
+    public static final char OPCION_DESPLEGAR_TAREAS = '3';
+    public static final char OPCION_FILTRAR_TAREAS = '4';
+    public static final char OPCION_ACTUALIZAR_TAREAS = '5';
+    public static final char OPCION_ELIMINAR_TAREAS = '6';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuAdministrador () {
+        super("Seleccione la acción que desea realizar:", getDiccionarioOpciones());
+        
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_AGREGAR_USUARIO, 
+                                    OPCION_CREAR_TAREA,
+                                    OPCION_DESPLEGAR_TAREAS,
+                                    OPCION_FILTRAR_TAREAS,
+                                    OPCION_ACTUALIZAR_TAREAS,
+                                    OPCION_ELIMINAR_TAREAS};
+        String[] etiquetas = {"Agregar un usuario nuevo",
+                                "Crear tarea nueva",
+                                "Desplegar tareas",
+                                "Filtrar tareas",
+                                "Actualizar tareas",
+                                "Eliminar tarea"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
+/**
+ * Menú para el desarrollador.
+ */
+class MenuDesarrollador extends Menu {
+    public static final char OPCION_DESPLEGAR_TAREAS = '1';
+    public static final char OPCION_FILTRAR_TAREAS = '2';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuDesarrollador () {
+        super("Seleccione la acción que desea realizar:", getDiccionarioOpciones());
+        
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_DESPLEGAR_TAREAS,
+                                    OPCION_FILTRAR_TAREAS};
+        String[] etiquetas = {"Desplegar tareas",
+                                "Filtrar tareas"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
+/**
+ * Menú para el invitado.
+ */
+class MenuInvitado extends Menu {
+    public static final char OPCION_CREAR_TAREA = '1';
+    public static final char OPCION_DESPLEGAR_TAREAS = '2';
+    public static final char OPCION_FILTRAR_TAREAS = '3';
+    public static final char OPCION_ACTUALIZAR_TAREAS = '4';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuInvitado () {
+        super("Seleccione la acción que desea realizar:", getDiccionarioOpciones());
+        
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_CREAR_TAREA,
+                                    OPCION_DESPLEGAR_TAREAS,
+                                    OPCION_FILTRAR_TAREAS,
+                                    OPCION_ACTUALIZAR_TAREAS};
+        String[] etiquetas = {"Crear tarea nueva",
+                                "Desplegar tareas",
+                                "Filtrar tareas",
+                                "Actualizar tareas"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
 
 public class App {
+    public static Usuario usuarioActual; // El usuario que corre la App.
     public static void main(String[] args) throws Exception {
         Scanner s = new Scanner(System.in);
         MenuInicio menuInicio = new MenuInicio();
         do {
             System.out.println(menuInicio);
-            char eleccion = s.nextLine().charAt(0);
-            menuInicio.setEleccion(eleccion);
-            //TODO: hacer el manejo de excepciones por si el usuario pone algo que no toca.
-            if (eleccion == MenuInicio.OPCION_INICIAR_SESION) {
-                solicitarCredenciales(s);
+            menuInicio.setEleccion(s.nextLine().charAt(0));  //TODO: manejo de excepciones.
+
+            if (menuInicio.getEleccion() == MenuInicio.OPCION_INICIAR_SESION) {
+                /* solicitamos y validamos credenciales. */
+                if (validaCredenciales(s)) {
+                    switch (usuarioActual.getTipo()) {
+
+                        case TipoUsuario.ADMINISTRADOR:
+                            Menu menuAdmin = new Menu(null, null);
+
+                            break;
+                        case TipoUsuario.DESARROLLADOR:
+                            
+                            break;
+                        case TipoUsuario.INVITADO:
+                            
+                            break;
+                        default:
+                            break;
+                    } 
+                } else {
+                    System.out.println("Las credenciales son incorrectas.");
+                    // TODO: Si da tiempo, hacer un menú para volver a intentar o salir.
+                }
             }
         } while (menuInicio.getEleccion() != MenuInicio.OPCION_SALIR);
         s.close();
     }
     /**
-     * NOTA: Método no implementable. Se requiere el uso de persistencia de datos de usuarios.
-     * Le solicita las credenciales al usuario.
-     * @param s T
-     * @return
+     * Le solicita las credenciales al usuario y verifica si existe un usuario con ellas.
+     * En ese caso establece {@code usuarioActual} como ese usuario.
+     * @param s Scanner con el que el usuario se comunica con el programa.
+     * @return {@code true} si las credenciales son de un usuario existente y {@code false}
+     * si no.
      */
-    public static boolean solicitarCredenciales(Scanner s) {
+    public static boolean validaCredenciales(Scanner s) {
         System.out.println("Ingrese su correo/nickname y su contraseña.");
         System.out.println("Correo/nickname: ");
-        String email = s.next(); //TODO: manejo de excepciones.
+        String emailNickname = s.next(); //TODO: manejo de excepciones.
         System.out.println("Contraseña: ");
-        String contraseña = s.next(); //TODO: manejo de excepciones.
-        return true; // TODO: hacer la verificación correcta de que las credenciales son correctas.
+        String password = s.next(); //TODO: manejo de excepciones.
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src\\archivos\\usuarios.dat"));
+            List<Usuario> usuarios = (List<Usuario>) ois.readObject();
+            for (Usuario usuario : usuarios) {
+                /* Optimización de búsqueda */
+                if (usuario.getEmail().equals(emailNickname) || usuario.getNickname().equals(emailNickname)) {
+                    if (usuario.getPassword() == password) {
+                        usuarioActual = usuario;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            ois.close(); // TODO: Revisar si sí lo debo cerrar aquí o si lo necesito después.
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
