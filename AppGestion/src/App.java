@@ -147,7 +147,6 @@ class MenuRoles extends Menu {
     }
     /* ----- CONSTRUCTOR ----- */
 }
-
 /**
  * Menú para el desarrollador.
  */
@@ -239,27 +238,17 @@ public class App {
                     }
                     break;
                 /* ----- Lógica del estado de inicio de sesión ----- */
+                /* ----- CAMBIO DE ESTADO ----- */
                 case EstadosApp.INICIO_SESION:
                     if (validaCredenciales(s)) {
                         System.out.println("Credenciales válidas." +
                                             "\n¡Bienvenido" + usuarioActual.getNickname() + "!");
-                        /* ----- CAMBIO DE ESTADO ----- */
                         estadoActual = EstadosApp.USO_GENERAL;
                     } else {
                         System.out.println("Las credenciales ingresadas no son válidas.");
-                        MenuOperacion menuOperacion = new MenuOperacion();
-                        System.out.println(menuOperacion);
-                        menuOperacion.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
-                        /* ----- CAMBIO DE ESTADO ----- */
-                        switch (menuOperacion.getEleccion()) {
-                            case MenuOperacion.OPCION_REPETIR:
-                                // Mantengo el estado actual.
-                                break;
-                            case MenuOperacion.OPCION_CANCELAR:
-                                estadoActual = EstadosApp.INICIO;
-                                break;
-                            default:
-                                break;
+                        /* Se pregunta si se quiere repetir la operación */
+                        if (!repetirOperacion(s)) {
+                            estadoActual = EstadosApp.INICIO;
                         }
                     }
                     break;
@@ -341,14 +330,22 @@ public class App {
                     break;
                 /* ----- ESTADOS PARA LAS FUNCIONES DEL USUARIO ----- */
                 case EstadosApp.AGREGAR_USUARIO:
+                    /* ----- CAMBIO DE ESTADO ----- */
                     if (agregaUsuario(s)) {
                         System.out.println("Se ha agregado con éxito al usuario.");
                         estadoActual = EstadosApp.USO_GENERAL;
+                    /* Se pregunta si se quiere repetir la operación */
                     } else if (!repetirOperacion(s)) {
                         estadoActual = EstadosApp.USO_GENERAL;
                     }
                     break;
                 case EstadosApp.CREAR_TAREA:
+                    System.out.println("Ingrese el nombre de usuario del usuario al que se le asignará esta tarea.");
+                    String nickname = s.nextLine(); // TODO: manejo de excepciones
+                    if (existeUsuario(nickname)) {
+                        
+                    }
+
                     break;
                 case EstadosApp.DESPLEGAR_TAREAS:
                     break;
@@ -364,6 +361,26 @@ public class App {
             }
         } while (!estadoActual.equals(EstadosApp.SALIR));
         s.close();
+    }
+    /**
+     * Verifica si existe un usuario con el nickname que pasa como parámetro.
+     * @param nickname Nombre de usuario del usuario que se busca su existencia.
+     * @return {@code true} si el usuario existe y {@code false} si no.
+     */
+    public static boolean existeUsuario(String nickname) {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src\\archivos\\usuarios.dat"));
+            List<Usuario> usuarios = (List<Usuario>) ois.readObject();
+            for (Usuario usuario : usuarios) {
+                if (usuario.getNickname().equals(nickname)) {
+                    return true;
+                }
+            }
+            ois.close(); // TODO: Revisar si sí lo debo cerrar aquí o si lo necesito después.
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     /**
      * Le solicita las credenciales al usuario y verifica si existe un usuario con ellas.
@@ -458,15 +475,17 @@ public class App {
             String datoDuplicado;
             switch (uee.getDatoDuplicado()) {
                 case "nickname":
-                    datoDuplicado = "nombre de usuario";
+                    datoDuplicado = "nombre de usuario \"" + nickname + "\"";
                     break;
                 case "email":
-                    datoDuplicado = "correo electrónico";
+                    datoDuplicado = "correo electrónico \"" + email + "\"";
                     break;
             }
             System.out.println("El " + datoDuplicado + " ya ha sido registrado.");
+            // TODO: mejorar el sistema para que lo especifique en el momento donde se introdujo el dato.
             return false;
         }
         
     }
+
 }
