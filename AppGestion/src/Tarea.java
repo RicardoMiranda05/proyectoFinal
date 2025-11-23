@@ -109,6 +109,11 @@ public class Tarea implements Serializable {
     }
 
     public void setFechaInicio(LocalDate fechaInicio) {
+        if (this.fechaInicio != null) {
+            throw new UnsupportedOperationException(
+                "La fecha de inicio no puede modificarse una vez establecida."
+            );
+        }
         this.fechaInicio = fechaInicio;
     }
 
@@ -125,6 +130,11 @@ public class Tarea implements Serializable {
     }
 
     public void setFechaFin(LocalDate fechaFin) {
+        if (this.fechaFin != null) {
+            throw new UnsupportedOperationException(
+                "La fecha de finalizacion no puede modificarse una vez establecida"
+            );
+        }
         this.fechaFin = fechaFin;
     }
 
