@@ -1,3 +1,7 @@
+package usuarios;
+
+import recursos.TipoUsuario;
+
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BLANCA.
@@ -6,46 +10,27 @@
  * el pull request será rechazado.
  * ----- Mensaje genérico -----
  * 
- * ----- Mensaje para VISITANTES -----
- * Los métodos relacionados con tareas (crear, ver, filtrar, actualizar) se dejarán como
- * incompletos por ahora porque las clases Tarea y ListaTareas aún no están implementadas.
- * Cuando esas ramas estén listas, estos métodos se completarán.
- * ----- Mensaje para VISITANTES -----
- * 
- * Esta clase representa a un usuario Desarrollador. 
- * Un desarrollador solo puede crear y modificar sus propias tareas.
+ * Esta clase representa a un usuario Desarrollador 
  */
 public class Desarrollador extends Usuario {
 
-    /* ----- CONSTRUCTORES ----- */
     public Desarrollador(String nombre, String nickname, String email, String password) {
         super(nombre, nickname, email, password);
     }
-    /* ----- CONSTRUCTORES ----- */
 
-    /* ----- MÉTODOS (incompletos) ----- */
-
-    /**
-     * Crea una tarea para este desarrollador.
-     * Nota: se implementa cuando exista la clase Tarea y ListaTareas.
-     */
-    public void crearTareaParaMi(/* parámetros de Tarea si los definen */) {
-        // TODO: implementar cuando Tarea/ListaTareas estén listas
+    @Override
+    public void verTareas(Usuario user) {
+        System.out.println("Función verTareas(user) aún no implementada.");
     }
 
-    
-    public void verMisTareas() {
-        // TODO: implementar con tareasAsignadas
+    @Override
+    public TipoUsuario getTipo() {
+        return TipoUsuario.DESARROLLADOR;
     }
 
-    public void filtrarMisTareasPorEstado(/* String estado o enum Estado */) {
-        // TODO: implementar cuando Tarea tenga atributo estado
-    }
-
-    public void actualizarMiTarea(/* idTarea, campos a cambiar */) {
-        // TODO: implementar cuando ListaTareas y Tarea estén listas
-    }
-
-    /* ----- MÉTODOS (incompletos) ----- */
+    // Métodos pendientes 
+    public void crearTareaParaMi() {}
+    public void verMisTareas() {}
+    public void filtrarMisTareasPorEstado() {}
+    public void actualizarMiTarea() {}
 }
-
