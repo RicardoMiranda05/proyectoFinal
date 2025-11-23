@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import excepciones.UsuarioExisteException;
-import maquinas.EstadosApp;
-import usuarios.*;
 import recursos.*;
+import tareas.*;
+import usuarios.*;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por BRAYAN.
@@ -235,12 +235,12 @@ class MenuFiltroAdmin extends Menu {
     }
     /* ----- CONSTRUCTOR ----- */
 }
-class MenuFiltroEstado extends Menu {
+class MenuEstado extends Menu {
     public static final char OPCION_PENDIENTE = '1';
     public static final char OPCION_EN_CURSO = '2';
     public static final char OPCION_COMPLETADA = '3';
     /* ----- CONSTRUCTOR ----- */
-    public MenuFiltroEstado () {
+    public MenuEstado () {
         super(getDiccionarioOpciones());
         
     }
@@ -260,6 +260,36 @@ class MenuFiltroEstado extends Menu {
     /* ----- CONSTRUCTOR ----- */
 }
 
+class MenuActualizacionAdmin extends Menu {
+    public static final char OPCION_ESTADO = '1';
+    public static final char OPCION_USUARIO = '2';
+    public static final char OPCION_DESCRIPCION = '3';
+    public static final char OPCION_FECHA_INICIO = '3';
+    public static final char OPCION_FECHA_FIN = '3';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuActualizacionAdmin () {
+        super(getDiccionarioOpciones());
+        
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_ESTADO,
+                                    OPCION_USUARIO,
+                                    OPCION_DESCRIPCION,
+                                    OPCION_FECHA_INICIO,
+                                    OPCION_FECHA_FIN};
+        String[] etiquetas = {"Estado",
+                                "Usuario al que le pertenece",
+                                "Descripción",
+                                "Fecha estimada de inicio",
+                                "Fecha estimada de fin"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
 public class App {
     public static final String listaTareas_dir = "\\src\\archivos\\lista_tareas.dat";
     public static final String listaUsuarios_dir = "\\src\\archivos\\usuarios.dat";
@@ -457,22 +487,8 @@ public class App {
                             menuFiltroAdmin.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
                             switch (menuFiltroAdmin.getEleccion()) {
                                 case MenuFiltroAdmin.OPCION_POR_ESTADO:
-                                    EstadoTarea estadoTarea = null;
-                                    MenuFiltroEstado menuFiltroEstado = new MenuFiltroEstado();
                                     System.out.println("Seleccione el estado:");
-                                    System.out.println(menuFiltroEstado);
-                                    menuFiltroEstado.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
-                                    switch (menuFiltroEstado.getEleccion()) {
-                                        case MenuFiltroEstado.OPCION_PENDIENTE:
-                                            estadoTarea = EstadoTarea.PENDIENTE;
-                                            break;
-                                        case MenuFiltroEstado.OPCION_EN_CURSO:
-                                            estadoTarea = EstadoTarea.EN_CURSO;
-                                            break;
-                                        case MenuFiltroEstado.OPCION_COMPLETADA:
-                                            estadoTarea = EstadoTarea.COMPLETADA;
-                                            break;
-                                    }
+                                    EstadoTarea estadoTarea = getEleccionEstado(s); // TODO: manejo de excepciones
                                     listaTareas.listarPorEstado(estadoTarea);
                                     break;
                                 case MenuFiltroAdmin.OPCION_POR_USUARIO:
@@ -497,22 +513,7 @@ public class App {
                             }
                             break;
                         case TipoUsuario.DESARROLLADOR:
-                            EstadoTarea estadoTarea = null;
-                            MenuFiltroEstado menuFiltroEstado = new MenuFiltroEstado();
-                            System.out.println("Seleccione el estado:");
-                            System.out.println(menuFiltroEstado);
-                            menuFiltroEstado.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
-                            switch (menuFiltroEstado.getEleccion()) {
-                                case MenuFiltroEstado.OPCION_PENDIENTE:
-                                    estadoTarea = EstadoTarea.PENDIENTE;
-                                    break;
-                                case MenuFiltroEstado.OPCION_EN_CURSO:
-                                    estadoTarea = EstadoTarea.EN_CURSO;
-                                    break;
-                                case MenuFiltroEstado.OPCION_COMPLETADA:
-                                    estadoTarea = EstadoTarea.COMPLETADA;
-                                    break;
-                            }
+                            EstadoTarea estadoTarea = getEleccionEstado(s);
                             listaTareas.listarPorEstado(estadoTarea);
                             break;
                         case TipoUsuario.INVITADO:
@@ -525,7 +526,37 @@ public class App {
                 case EstadosApp.ACTUALIZAR_TAREAS:
                     switch (usuarioActual.getTipo()) {
                         case TipoUsuario.ADMINISTRADOR:
-                            // TODO: Modificar estado de todas las tareas.
+                            System.out.println("Ingrese el id de la tarea que desea modificar");
+                            String id = s.nextLine(); //TODO: manejo de excepciones
+                            listaTareas.imprimeTarea(id);
+                            MenuActualizacionAdmin menuActAdmin = new MenuActualizacionAdmin();
+                            System.out.println(menuActAdmin);
+                            System.out.println("¿Qué desea modificar?");
+                            menuActAdmin.setEleccion(s.nextLine().charAt(0)); //TODO: manejo de excepciones
+                            switch (menuActAdmin.getEleccion()) {
+                                case MenuActualizacionAdmin.OPCION_ESTADO:
+                                    System.out.println("¿A qué estado pasará la tarea?");
+                                    EstadoTarea nuevoEstado = getEleccionEstado(s); // TODO: manejo de excepciones
+                                    listaTareas.cambiarEstado(usuarioActual, id, nuevoEstado); // TODO: manejo de excepciones
+                                    break;
+                                case MenuActualizacionAdmin.OPCION_USUARIO:
+                                    System.out.println("Ingrese el nickname del usuario al que le será asignada:");
+                                    String nickname = s.nextLine(); //TODO: manejo de excepciones
+                                    Usuario nuevoUsuario = getUsuario(nickname); // TODO: manejo de excepciones
+                                    if (nuevoEstado != null) {
+                                        System.out.println("La tarea ha sido reasignada a " + nuevoUsuario.getNickname());
+                                        listaTareas.cambiarUsuarioAsignado(usuarioActual, id, nuevoUsuario);
+                                    }
+                                    break;
+                                case MenuActualizacionAdmin.OPCION_DESCRIPCION:
+                                    System.out.println("Ingrese la nueva descripción:");
+                                    String nuevDescripcion = s.nextLine(); // TODO: manejo de excepciones
+                                    listaTareas.actualizarDescripcion(usuarioActual, id, nuevDescripcion); // TODO: manejo de excepciones
+                                    
+                                    break;
+                                default:
+                                    break;
+                            }
                             // TODO: Modificar usuario de pertenencia.
                             // TODO: Modificar descripción de todas las tareas.
                             // TODO: Modificar fecha estimada de inicio.
@@ -549,6 +580,25 @@ public class App {
             }
         } while (!estadoActual.equals(EstadosApp.SALIR));
         s.close();
+    }
+    /**
+     * Crea un menú para que el usuario ingrese el estado de la tarea de interés.
+     * @param s Teclado con el que se comunica el usuario.
+     * @return El estado de tarea de interés del usuario.
+     */
+    public static EstadoTarea getEleccionEstado(Scanner s) {
+        MenuEstado menuEstado = new MenuEstado();
+        menuEstado.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones.
+        switch (menuEstado.getEleccion()) {
+            case MenuEstado.OPCION_PENDIENTE:
+                return EstadoTarea.PENDIENTE;
+            case MenuEstado.OPCION_EN_CURSO:
+                return EstadoTarea.EN_CURSO;
+            case MenuEstado.OPCION_COMPLETADA:
+                return EstadoTarea.COMPLETADA;
+            default:
+                return null; //TODO: lanzar error "Estado no existe"
+        }
     }
     /**
      * Crea una tarea para sí mismo.
@@ -581,7 +631,7 @@ public class App {
             String fechaEstimadaInicio = s.nextLine(); // TODO: manejo de excepciones
             System.out.println("Ingrese la fecha estimada de fin: ");
             String fechaEstimadaFin = s.nextLine(); // TODO: manejo de excepciones
-            ((Administrador) usuarioActual).crearTareaPara(/*Otros parámetros a considerar*/usuarioDestino, descripcion, fechaEstimadaInicio, fechaEstimadaFin); // TODO: manejo de excepciones
+            ((Administrador) usuarioActual).crearTarea(/*Otros parámetros a considerar*/usuarioDestino, descripcion, fechaEstimadaInicio, fechaEstimadaFin); // TODO: manejo de excepciones
             /* TODO: código para volver a intentar o cancelar operación */
         }
     }
@@ -614,7 +664,7 @@ public class App {
         String email = s.next();
         System.out.println("Contraseña: ");
         String password = s.next();
-        TipoUsuario rol;
+        TipoUsuario rol = null;
         MenuRoles menuRoles = new MenuRoles();
         System.out.println("¿Qué rol le asigna?");
         System.out.println(menuRoles);
@@ -630,20 +680,13 @@ public class App {
                 rol = TipoUsuario.INVITADO;
                 break;
         }
-        MenuConfirmacion menuConfirmacion = new MenuConfirmacion();
-        System.out.println("¿Desea confirmar la operación?");
-        System.out.println(menuConfirmacion);
-        menuConfirmacion.setEleccion(s.nextLine().charAt(0));
         try {
-            switch (menuConfirmacion.getEleccion()) {
-            case MenuConfirmacion.OPCION_CONFIRMAR:
+            if (usuarioConfirma(s)) {
                 ((Administrador) usuarioActual).agregarUsuario(nombre, nickname, email, password, rol);
-                return true;
-            case MenuConfirmacion.OPCION_CANCELAR:
-                return false;
+                return true; // <--- Si se añade.
             }
         } catch (UsuarioExisteException uee) {
-            String datoDuplicado;
+            String datoDuplicado = "";
             switch (uee.getDatoDuplicado()) {
                 case "nickname":
                     datoDuplicado = "nombre de usuario \"" + nickname + "\"";
@@ -652,11 +695,24 @@ public class App {
                     datoDuplicado = "correo electrónico \"" + email + "\"";
                     break;
             }
-            System.out.println("El " + datoDuplicado + " ya ha sido registrado.");
+            System.out.println("El " + datoDuplicado + " " + 
+                                (datoDuplicado == "nickname" ? nickname : email ) + 
+                                " ya ha sido registrado.");
             // TODO: mejorar el sistema para que lo especifique en el momento donde se introdujo el dato.
-            return false;
         }
-        
+        return false; //<--- Si no se añade.
+    }
+    /**
+     * Solicita al usuario confirmar la operación reciente, para mayor seguridad.
+     * @param s Teclado con el que se comunica el usuario.
+     * @return {@code true} si el usuario confirma y {@code false} si no.
+     */
+    public static boolean usuarioConfirma(Scanner s) {
+        MenuConfirmacion menuConfirmacion = new MenuConfirmacion();
+        System.out.println("¿Desea confirmar la operación?");
+        System.out.println(menuConfirmacion);
+        menuConfirmacion.setEleccion(s.nextLine().charAt(0)); // TODO: manejo de excepciones
+        return menuConfirmacion.getEleccion() == MenuConfirmacion.OPCION_CONFIRMAR;
     }
     /**
      * Le solicita las credenciales al usuario y verifica si existe un usuario con ellas.
@@ -716,6 +772,7 @@ public class App {
         }
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
             Object obj = ois.readObject();
+            ois.close();
             if (obj instanceof ArrayList<?>) {
                 return (ArrayList<Usuario>) obj;
             }

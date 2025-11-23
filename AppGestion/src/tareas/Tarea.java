@@ -1,3 +1,4 @@
+package tareas;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por RICARDO.
@@ -15,6 +16,9 @@
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
+
+import recursos.EstadoTarea;
+import usuarios.Usuario;
 
 /**
  * Representa una tarea dentro del sistema To-Do List.

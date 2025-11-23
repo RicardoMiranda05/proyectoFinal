@@ -1,3 +1,4 @@
+package excepciones;
 /**
  * Excepción personalizada para indicar errores en el manejo de fechas
  * de las tareas.

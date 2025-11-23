@@ -1,3 +1,4 @@
+package tareas;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por RICARDO.
@@ -20,6 +21,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+
+import recursos.EstadoTarea;
+import usuarios.*;
+import excepciones.FechaInvalidaException;
 
 /**
  * Representa una lista de tareas (colección) implementada con un arreglo.

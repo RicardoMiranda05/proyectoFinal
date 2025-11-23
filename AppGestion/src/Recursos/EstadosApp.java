@@ -1,4 +1,4 @@
-package maquinas;
+package recursos;
 /**
  * Contiene a los estados en los que la aplicación se encuentra
  * en tiempo de ejecución. 

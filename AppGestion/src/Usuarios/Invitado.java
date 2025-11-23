@@ -1,3 +1,4 @@
+package usuarios;
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por FERNANDA.

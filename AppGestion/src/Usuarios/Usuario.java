@@ -1,7 +1,7 @@
 package usuarios;
 import java.io.Serializable;
 import java.util.UUID;
-import excepciones.UsuarioException;
+
 import recursos.TipoUsuario;
 /**
  * ----- Mensaje genérico -----
