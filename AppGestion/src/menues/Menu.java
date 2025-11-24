@@ -15,11 +15,6 @@ public class Menu {
     private Opcion eleccion;
     private int numOpciones;
     private boolean closed; // Cerrado significa que el menú no admite más modifaciones en su lista de opciones.
-    /** NOTAS
-     * Mover salida al final
-     * 
-     */
-
     
     /**
      * Cambia dos opciones de lugar en la lista de opciones de acuerdo a sus índices.
@@ -160,7 +155,7 @@ public class Menu {
     public boolean isClosed() {
         return closed;
     }
-    public void close() throws MenuClosedException {
+    public void close() throws Exception {
         if (closed) {
             throw new MenuClosedException("El menú ya ha sido cerrado anteriormente.");
         }

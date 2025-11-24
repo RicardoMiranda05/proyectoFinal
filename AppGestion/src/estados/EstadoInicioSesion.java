@@ -16,7 +16,7 @@ public class EstadoInicioSesion extends Estado {
         if (validaCredenciales(s)) {
             System.out.println("Credenciales válidas." +
                                 "\n¡Bienvenido" + usuarioActual.getNickname() + "!");
-            return null;//new EstadoUsoGeneral(EstadosApp.USO_GENERAL); // TODO: Cambiar cuando se implemente
+            return new EstadoUsoGeneral();
         } else {
             System.out.println("Las credenciales ingresadas no son válidas.");
             /* Se pregunta si se quiere repetir la operación */
@@ -34,23 +34,17 @@ public class EstadoInicioSesion extends Estado {
      * si no.
      */
     public static boolean validaCredenciales(Scanner s) {
-        System.out.println(listaUsuarios);
         System.out.println("Ingrese su correo/nombre de usuario y su contraseña.");
-        System.out.println("Correo/Nombre de usuario: ");
-        String emailNickname = s.next(); //TODO: manejo de excepciones.
+        System.out.print("Correo/Nombre de usuario: ");
+        String emailNickname = s.next(); //TODO: OPCIONAL manejo de excepciones Long.
+
         for (Usuario usuario : listaUsuarios) {
             /* Optimización de búsqueda */
             if (usuario.getEmail().equals(emailNickname) || usuario.getNickname().equals(emailNickname)) {
-                break;
-            }
-            return false;
-        }
-        System.out.println("Contraseña: ");
-        String password = s.next(); //TODO: manejo de excepciones.
-        for (Usuario usuario : listaUsuarios) {
-            /* Optimización de búsqueda */
-            if (usuario.getEmail().equals(emailNickname) || usuario.getNickname().equals(emailNickname)) {
-                if (usuario.getPassword() == password) {
+                System.out.print("Contraseña: ");
+                String password = s.next(); //TODO: OPCIONAL manejo de excepciones Long.
+                if (usuario.getPassword().equals(password)) {
+                    usuarioActual = usuario;
                     return true;
                 } else {
                     return false;

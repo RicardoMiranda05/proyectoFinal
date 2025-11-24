@@ -8,34 +8,33 @@ import excepciones.IdRepetidoException;
  * @author Brayan Montiel Ramírez.
  */
 public class MenuSalida extends Menu {
-    private final Opcion opcionSalida;
-    public static final char identificadorSalida = 's';
+    private final Opcion OPCION_SALIDA;
+    public static final char IDENTIFICADOR_SALIDA = 's';
 
     @Override
-    public void close() throws MenuClosedException {
+    public void close() throws Exception {
         /* ----- Antes de cerrar ----- */
         try {
-            addOpcion(opcionSalida);
+            addOpcion(OPCION_SALIDA);
         } catch (IdRepetidoException ire) {
-            ire.printStackTrace();
-            System.out.println("hint: No crear una opción con el identificador \'s\' (ya existe).");
+            throw new IdRepetidoException("No se puede añadir una opción con el identificador reservado \'s\'.");
         }
         /* ----- Antes de cerrar ----- */
         super.close();
 
     }
     /* ----- CONSTRUCTOR ----- */
-    public MenuSalida(String etiquetaSalida) throws IdRepetidoException, MenuClosedException {
+    public MenuSalida(String etiquetaSalida) {
         super();
-        opcionSalida = new Opcion(etiquetaSalida, identificadorSalida);
+        OPCION_SALIDA = new Opcion(etiquetaSalida, IDENTIFICADOR_SALIDA);
     }
     /* ----- CONSTRUCTOR ----- */
     /* ----- ACCESO ----- */
     public Opcion getOpcionSalida() {
-        return opcionSalida;
+        return OPCION_SALIDA;
     }
     public char getIdentificadorSalida() {
-        return identificadorSalida;
+        return IDENTIFICADOR_SALIDA;
     }
     /* ----- ACCESO ----- */
 }

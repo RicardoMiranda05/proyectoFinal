@@ -15,8 +15,8 @@ import usuarios.Usuario;
  */
 public abstract class AppComunicador {
     /* ----- REFERENCIAS PARA FUNCIONAMIENTO ----- */
-    public static final String listaTareas_dir = "\\src\\archivos\\lista_tareas.dat";
-    public static final String listaUsuarios_dir = "\\src\\archivos\\usuarios.dat";
+    public static final String listaTareas_dir = "datos/lista_tareas.dat";
+    public static final String listaUsuarios_dir = "datos/usuarios.dat";
     public static Usuario usuarioActual; // El usuario que corre la App.
     public static ListaTareas listaTareas;
     public static List<Usuario> listaUsuarios;
@@ -32,6 +32,7 @@ public abstract class AppComunicador {
      */
     public static void cargaUsuarios() {
         listaUsuarios = cargarDesdeArchivo(listaUsuarios_dir);
+        System.out.println("Lista cargada: " + listaUsuarios);
     }
     @SuppressWarnings("unchecked")
     /**
@@ -47,12 +48,15 @@ public abstract class AppComunicador {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
             Object obj = ois.readObject();
             ois.close();
+            System.out.println("Condición: " + (obj instanceof ArrayList<?>));
+            System.out.println(obj);
             if (obj instanceof ArrayList<?>) {
                 return (ArrayList<Usuario>) obj;
             }
         } catch (Exception e) {
             System.out.println("No se pudo cargar la lista de usuarios. Se iniciará una nueva. Detalle: " + e.getMessage());
         }
+        System.out.println("Se mandó vacía");
         return new ArrayList<Usuario>();
     }
     

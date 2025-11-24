@@ -13,6 +13,14 @@ import java.util.Scanner;
  */
 public abstract class Estado {
     private EstadosApp referencia; // Referencia de la etiqueta que representa a este estado.
+    
+    /**
+     * Implementa la lógica del estado en curso.
+     * @param s : Teclado con el cual se comunica el usuario.
+     * @return : El nuevo estado al que pasa la aplicación tras la ejecución de este.
+     * @throws Exception 
+     */
+    public abstract Estado ejecutar(Scanner s) throws Exception;
     /* ----- CONSTRUCTOR ----- */
     public Estado(EstadosApp referencia) {
         super();
@@ -25,15 +33,6 @@ public abstract class Estado {
     }
     /* ----- ACCESO ----- */
     /* ----- UTILERÍA ----- */
-    
-    /* ----- UTILERÍA ----- */
-    /**
-     * Implementa la lógica del estado en curso.
-     * @param s : Teclado con el cual se comunica el usuario.
-     * @return : El nuevo estado al que pasa la aplicación tras la ejecución de este.
-     * @throws Exception 
-     */
-    public abstract Estado ejecutar(Scanner s) throws Exception;
     /**
      * Compara a dos estados por su referencia.
      * @param estado : Estado con el que {@code this} se compara.
@@ -48,6 +47,6 @@ public abstract class Estado {
             return false;
         return true;
     }
-    
+    /* ----- UTILERÍA ----- */
     
 }

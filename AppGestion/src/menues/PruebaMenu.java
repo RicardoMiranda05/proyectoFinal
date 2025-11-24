@@ -20,9 +20,10 @@ public class PruebaMenu {
         menuSalida.addOpcion("Opción 3");
         menuSalida.close();
         System.out.println(menuSalida);
+        /*
         MenuInicioApp menuInicio = new MenuInicioApp();
         menuInicio.close();
         System.out.println(menuInicio);
-
+        */
     }
 }
