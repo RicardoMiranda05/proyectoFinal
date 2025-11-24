@@ -24,7 +24,6 @@ import java.time.LocalDate;
 
 import recursos.EstadoTarea;
 import usuarios.*;
-import excepciones.FechaInvalidaException;
 
 /**
  * Representa una lista de tareas (colección) implementada con un arreglo.

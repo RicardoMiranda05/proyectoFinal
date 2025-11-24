@@ -1,10 +1,9 @@
 package usuarios;
 
 import recursos.TipoUsuario;
-import excepciones.UsuarioExisteException;
+
 import java.util.List;
 import java.io.*;
-import excepciones.UsuarioException;
 
 /**
  * ----- Mensaje genérico -----

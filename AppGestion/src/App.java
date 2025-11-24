@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import excepciones.UsuarioExisteException;
+import menues.Menu;
 import recursos.*;
 import tareas.*;
 import usuarios.*;
@@ -25,23 +25,6 @@ import usuarios.*;
  * 
  * INSERTA TU PROPIO COMENTARIO DE LA CLASE.
  */
-class MenuInicio extends Menu {
-    public static final char OPCION_INICIAR_SESION = '1';
-    /* ----- CONSTRUCTOR ----- */
-    public MenuInicio () {
-        super(getDiccionarioOpciones());
-    }
-    /**
-     * Construye el diccionario de opciones para este menú.
-     * @return El diccionario de opciones del menú.
-     */
-    private static Diccionario<Character,String> getDiccionarioOpciones() {
-        Character[] selecciones = {OPCION_INICIAR_SESION, OPCION_SALIR};
-        String[] etiquetas = {"Iniciar sesión", "Salir"};
-        return new Diccionario<>(selecciones, etiquetas);
-    }
-    /* ----- CONSTRUCTOR ----- */
-}
 class MenuOperacion extends Menu {
     public static final char OPCION_REPETIR= '1';
     public static final char OPCION_CANCELAR = '2';
@@ -264,8 +247,8 @@ class MenuActualizacionAdmin extends Menu {
     public static final char OPCION_ESTADO = '1';
     public static final char OPCION_USUARIO = '2';
     public static final char OPCION_DESCRIPCION = '3';
-    public static final char OPCION_FECHA_INICIO = '3';
-    public static final char OPCION_FECHA_FIN = '3';
+    public static final char OPCION_FECHA_INICIO = '4';
+    public static final char OPCION_FECHA_FIN = '5';
     /* ----- CONSTRUCTOR ----- */
     public MenuActualizacionAdmin () {
         super(getDiccionarioOpciones());
@@ -283,6 +266,33 @@ class MenuActualizacionAdmin extends Menu {
                                     OPCION_FECHA_FIN};
         String[] etiquetas = {"Estado",
                                 "Usuario al que le pertenece",
+                                "Descripción",
+                                "Fecha estimada de inicio",
+                                "Fecha estimada de fin"};
+        return new Diccionario<>(selecciones, etiquetas);
+    }
+    /* ----- CONSTRUCTOR ----- */
+}
+class MenuActualizacionDes extends Menu {
+    public static final char OPCION_ESTADO = '1';
+    public static final char OPCION_DESCRIPCION = '2';
+    public static final char OPCION_FECHA_INICIO = '3';
+    public static final char OPCION_FECHA_FIN = '4';
+    /* ----- CONSTRUCTOR ----- */
+    public MenuActualizacionDes () {
+        super(getDiccionarioOpciones());
+        
+    }
+    /**
+     * Construye el diccionario de opciones para este menú.
+     * @return El diccionario de opciones del menú.
+     */
+    private static Diccionario<Character,String> getDiccionarioOpciones() {
+        Character[] selecciones = {OPCION_ESTADO,
+                                    OPCION_DESCRIPCION,
+                                    OPCION_FECHA_INICIO,
+                                    OPCION_FECHA_FIN};
+        String[] etiquetas = {"Estado",
                                 "Descripción",
                                 "Fecha estimada de inicio",
                                 "Fecha estimada de fin"};
@@ -552,17 +562,49 @@ public class App {
                                     System.out.println("Ingrese la nueva descripción:");
                                     String nuevDescripcion = s.nextLine(); // TODO: manejo de excepciones
                                     listaTareas.actualizarDescripcion(usuarioActual, id, nuevDescripcion); // TODO: manejo de excepciones
-                                    
                                     break;
-                                default:
+                                case MenuActualizacionAdmin.OPCION_FECHA_INICIO:
+                                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                                    String nuevaFechaInicio = s.nextLine(); // TODO: manejo de excepciones
+                                    listaTareas.actualizarFechaEstimadaInicio(nuevoUsuario, id, nuevaFechaInicio);// TODO: manejo de excepciones
+                                    break;
+                                case MenuActualizacionAdmin.OPCION_FECHA_FIN:
+                                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                                    String nuevaFechaFin = s.nextLine(); // TODO: manejo de excepciones
+                                    listaTareas.actualizarFechaEstimadaFin(nuevoUsuario, id, nuevaFechaFin);// TODO: manejo de excepciones
                                     break;
                             }
-                            // TODO: Modificar usuario de pertenencia.
-                            // TODO: Modificar descripción de todas las tareas.
-                            // TODO: Modificar fecha estimada de inicio.
-                            // TODO: Modificar fecha estimada de fin.
                             break;
                         case TipoUsuario.DESARROLLADOR:
+                            System.out.println("Ingrese el id de la tarea que desea modificar");
+                            String id_ = s.nextLine(); //TODO: manejo de excepciones de entrada y de DEV accediendo a tareas de otros
+                            MenuActualizacionDes menuActDes = new MenuActualizacionDes();
+                            System.out.println(menuActDes);
+                            System.out.println("¿Qué desea modificar?");
+                            menuActAdmin.setEleccion(s.nextLine().charAt(0)); //TODO: manejo de excepciones
+                            switch (menuActAdmin.getEleccion()) {
+                                case MenuActualizacionAdmin.OPCION_ESTADO:
+                                    System.out.println("¿A qué estado pasará la tarea?");
+                                    EstadoTarea nuevoEstado = getEleccionEstado(s); // TODO: manejo de excepciones
+                                    listaTareas.cambiarEstado(usuarioActual, id_, nuevoEstado); // TODO: manejo de excepciones
+                                    break;
+                                case MenuActualizacionAdmin.OPCION_DESCRIPCION:
+                                    System.out.println("Ingrese la nueva descripción:");
+                                    String nuevDescripcion = s.nextLine(); // TODO: manejo de excepciones
+                                    listaTareas.actualizarDescripcion(usuarioActual, id_, nuevDescripcion); // TODO: manejo de excepciones
+                                    break;
+                                case MenuActualizacionAdmin.OPCION_FECHA_INICIO:
+                                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                                    String nuevaFechaInicio = s.nextLine(); // TODO: manejo de excepciones
+                                    listaTareas.actualizarFechaEstimadaInicio(usuarioActual, id_, nuevaFechaInicio);// TODO: manejo de excepciones
+                                    break;
+                                case MenuActualizacionAdmin.OPCION_FECHA_FIN:
+                                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                                    String nuevaFechaFin = s.nextLine(); // TODO: manejo de excepciones
+                                    listaTareas.actualizarFechaEstimadaFin(usuarioActual, id_, nuevaFechaFin);// TODO: manejo de excepciones
+                                    break;
+                            }
+                            break;
                             // TODO: Modificar estado de sus tareas.
                             // TODO: Modificar descripción de sus tareas.
                             // TODO: Modificar fecha estimada de inicio de sus tareas.
@@ -580,6 +622,77 @@ public class App {
             }
         } while (!estadoActual.equals(EstadosApp.SALIR));
         s.close();
+    }
+    public static boolean modificarTarea(Scanner s) {
+        System.out.println("Ingrese el id de la tarea que desea modificar");
+        String id = s.nextLine(); //TODO: manejo de excepciones
+        listaTareas.imprimeTarea(id);
+        if (usuarioActual.getTipo().equals(TipoUsuario.ADMINISTRADOR)) {
+            MenuActualizacionAdmin menuActAdmin = new MenuActualizacionAdmin();
+            System.out.println(menuActAdmin);
+            System.out.println("¿Qué desea modificar?");
+            menuActAdmin.setEleccion(s.nextLine().charAt(0)); //TODO: manejo de excepciones
+            switch (menuActAdmin.getEleccion()) {
+                case MenuActualizacionAdmin.OPCION_ESTADO:
+                    System.out.println("¿A qué estado pasará la tarea?");
+                    EstadoTarea nuevoEstado = getEleccionEstado(s); // TODO: manejo de excepciones
+                    listaTareas.cambiarEstado(usuarioActual, id, nuevoEstado); // TODO: manejo de excepciones
+                    break;
+                case MenuActualizacionAdmin.OPCION_USUARIO:
+                    System.out.println("Ingrese el nickname del usuario al que le será asignada:");
+                    String nickname = s.nextLine(); //TODO: manejo de excepciones
+                    Usuario nuevoUsuario = getUsuario(nickname); // TODO: manejo de excepciones
+                    if (nuevoEstado != null) {
+                        System.out.println("La tarea ha sido reasignada a " + nuevoUsuario.getNickname());
+                        listaTareas.cambiarUsuarioAsignado(usuarioActual, id, nuevoUsuario);
+                    }
+                    break;
+                case MenuActualizacionAdmin.OPCION_DESCRIPCION:
+                    System.out.println("Ingrese la nueva descripción:");
+                    String nuevDescripcion = s.nextLine(); // TODO: manejo de excepciones
+                    listaTareas.actualizarDescripcion(usuarioActual, id, nuevDescripcion); // TODO: manejo de excepciones
+                    break;
+                case MenuActualizacionAdmin.OPCION_FECHA_INICIO:
+                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                    String nuevaFechaInicio = s.nextLine(); // TODO: manejo de excepciones
+                    listaTareas.actualizarFechaEstimadaInicio(nuevoUsuario, id, nuevaFechaInicio);// TODO: manejo de excepciones
+                    break;
+                case MenuActualizacionAdmin.OPCION_FECHA_FIN:
+                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                    String nuevaFechaFin = s.nextLine(); // TODO: manejo de excepciones
+                    listaTareas.actualizarFechaEstimadaFin(nuevoUsuario, id, nuevaFechaFin);// TODO: manejo de excepciones
+                    break;
+        } else {
+            System.out.println("Ingrese el id de la tarea que desea modificar");
+            String id_ = s.nextLine(); //TODO: manejo de excepciones de entrada y de DEV accediendo a tareas de otros
+            MenuActualizacionDes menuActDes = new MenuActualizacionDes();
+            System.out.println(menuActDes);
+            System.out.println("¿Qué desea modificar?");
+            menuActDes.setEleccion(s.nextLine().charAt(0)); //TODO: manejo de excepciones
+            switch (menuActDes.getEleccion()) {
+                case MenuActualizacionDes.OPCION_ESTADO:
+                    System.out.println("¿A qué estado pasará la tarea?");
+                    EstadoTarea nuevoEstado = getEleccionEstado(s); // TODO: manejo de excepciones
+                    listaTareas.cambiarEstado(usuarioActual, id_, nuevoEstado); // TODO: manejo de excepciones
+                    break;
+                case MenuActualizacionDes.OPCION_DESCRIPCION:
+                    System.out.println("Ingrese la nueva descripción:");
+                    String nuevDescripcion = s.nextLine(); // TODO: manejo de excepciones
+                    listaTareas.actualizarDescripcion(usuarioActual, id_, nuevDescripcion); // TODO: manejo de excepciones
+                    break;
+                case MenuActualizacionDes.OPCION_FECHA_INICIO:
+                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                    String nuevaFechaInicio = s.nextLine(); // TODO: manejo de excepciones
+                    listaTareas.actualizarFechaEstimadaInicio(usuarioActual, id_, nuevaFechaInicio);// TODO: manejo de excepciones
+                    break;
+                case MenuActualizacionDes.OPCION_FECHA_FIN:
+                    System.out.println("Ingrese la nueva fecha estimada de inicio:");
+                    String nuevaFechaFin = s.nextLine(); // TODO: manejo de excepciones
+                    listaTareas.actualizarFechaEstimadaFin(usuarioActual, id_, nuevaFechaFin);// TODO: manejo de excepciones
+                    break;
+            }
+        }
+        break;
     }
     /**
      * Crea un menú para que el usuario ingrese el estado de la tarea de interés.
