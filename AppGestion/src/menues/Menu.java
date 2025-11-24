@@ -124,6 +124,20 @@ public class Menu {
     public Opcion getEleccion() {
         return eleccion;
     }
+    /**
+     * Establece la elección por el identificador que pasa por parámetro.
+     * @param identificador
+     * @throws IdNoEncontradoException
+     */
+    public void setEleccion(char identificador) throws IdNoEncontradoException {
+        for (Opcion opcion : listaOpciones) {
+            if (opcion.getIdentificador() == identificador) {
+                eleccion = opcion;
+                return;
+            }
+        }
+        throw new IdNoEncontradoException("La opción con el identificador " + identificador + " no ha sido hallada." );
+    }
     public void setEleccion(Opcion eleccion) {
         this.eleccion = eleccion;
     }
