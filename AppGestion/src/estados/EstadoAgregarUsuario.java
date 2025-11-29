@@ -52,17 +52,13 @@ public class EstadoAgregarUsuario extends Estado {
      */
     private boolean agregaUsuario(Scanner s) throws Exception {
         System.out.print("Nombre: ");
-        String nombre = s.next();
-        System.out.println();
+        String nombre = s.nextLine();
         System.out.print("Nombre de usuario: ");
-        String nickname = s.next();
-        System.out.println();
+        String nickname = s.nextLine();
         System.out.print("Correo electrónico: ");
-        String email = s.next();
-        System.out.println();
+        String email = s.nextLine();
         System.out.print("Contraseña: ");
-        String password = s.next();
-        System.out.println();
+        String password = s.nextLine();
         TipoUsuario rol = null;
         MenuRoles menuRoles = new MenuRoles();
         menuRoles.close();

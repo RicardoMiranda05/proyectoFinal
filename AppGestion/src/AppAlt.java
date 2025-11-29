@@ -41,8 +41,9 @@ public class AppAlt {
     public static void verificarListaInicial() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(listaUsuarios_dir));
+            ois.readObject();
             ois.close();
-        } catch (FileNotFoundException fnfe) {
+        } catch (FileNotFoundException | ClassNotFoundException e) {
             List<Usuario> usuarios = new ArrayList<>();
             usuarios.add(new Administrador("Juan Morales",
                                             "juan", 
