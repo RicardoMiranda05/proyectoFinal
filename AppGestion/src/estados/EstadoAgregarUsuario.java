@@ -94,7 +94,7 @@ public class EstadoAgregarUsuario extends Estado {
         }
 
         try {
-            if (usuarioConfirma(s)) {
+            if (MetodosGenerales.usuarioConfirma(s)) {
                 Administrador admin = (Administrador) AppComunicador.getInstancia().getUsuarioActual();
 
                 admin.agregarUsuario(usuarios, nombre, nickname, email, password, rol);
@@ -121,22 +121,6 @@ public class EstadoAgregarUsuario extends Estado {
         }
 
         return false; //<--- Si no se añade.
-    }
-    /**
-     * Solicita al usuario confirmar la operación reciente, para mayor seguridad.
-     * @param s Teclado con el que se comunica el usuario.
-     * @return {@code true} si el usuario confirma y {@code false} si no.
-     */
-    private boolean usuarioConfirma(Scanner s) throws Exception {
-        MenuConfirmacion menuConfirmacion = new MenuConfirmacion();
-        menuConfirmacion.close();
-        MetodosGenerales.solicitaEntrada(s, menuConfirmacion, "¿Desea confirmar la operación?");
-        if (menuConfirmacion.getEleccion().getIdentificador() == MenuConfirmacion.IDENTIFICADOR_CONFIRMAR) {
-            return true;
-        } else {
-            System.out.println("La operación fue cancelada.");
-            return false;
-        }
     }
     /* ----- CONSTRUCTOR ----- */
     public EstadoAgregarUsuario() {

@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import excepciones.IdNoEncontradoException;
 import menues.Menu;
+import menues.MenuConfirmacion;
 import menues.MenuOperacion;
 import recursos.InvalidCharException;
 import recursos.ScannerHelper;
@@ -14,9 +15,26 @@ import recursos.ScannerHelper;
  */
 public class MetodosGenerales {
     /**
+     * Solicita al usuario confirmar la operación reciente, para mayor seguridad.
+     * @param s Teclado con el que se comunica el usuario.
+     * @return {@code true} si el usuario confirma y {@code false} si no.
+     */
+    public static boolean usuarioConfirma(Scanner s) throws Exception {
+        MenuConfirmacion menuConfirmacion = new MenuConfirmacion();
+        menuConfirmacion.close();
+        MetodosGenerales.solicitaEntrada(s, menuConfirmacion, "¿Desea confirmar la operación?");
+        if (menuConfirmacion.getEleccion().getIdentificador() == MenuConfirmacion.IDENTIFICADOR_CONFIRMAR) {
+            return true;
+        } else {
+            System.out.println("La operación fue cancelada.");
+            return false;
+        }
+    }
+    /**
      * Verifica si se desea repetir la operación reciente.
      * @param s Teclado con el que se comunica el usuario.
      * @return {@code true} si el usuario desea repetir la operación y {@code false} si no.
+     * @throws Exception Si el identificador del menú no es '1' o el de salida.
      */
     public static boolean repetirOperacion(Scanner s) throws Exception{
         MenuOperacion menuOperacion = new MenuOperacion();

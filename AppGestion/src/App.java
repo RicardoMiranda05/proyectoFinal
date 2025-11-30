@@ -564,37 +564,5 @@ public class App {
         ((Administrador) usuarioActual).crearTareaParaMi(/*Otros parámetros a considerar*/descripcion, fechaEstimadaInicio, fechaEstimadaFin); // TODO: manejo de excepciones
         /* TODO: código para volver a intentar o cancelar operación */
     }
-    /**
-     * Crea una tarea para un usuario igual o diferente a quien la está creando.
-     * @param s
-     * @param nickname
-     * @return
-     */
-    public static boolean crearTareaPara(Scanner s, String nickname) {
-        Usuario usuarioDestino = getUsuario(nickname);
-        if (usuarioDestino != null) {
-            System.out.println("Ingrese la descripción de la tarea: ");
-            String descripcion = s.nextLine(); // TODO: manejo de excepciones
-            System.out.println("Ingrese la fecha estimada de inicio: ");
-            String fechaEstimadaInicio = s.nextLine(); // TODO: manejo de excepciones
-            System.out.println("Ingrese la fecha estimada de fin: ");
-            String fechaEstimadaFin = s.nextLine(); // TODO: manejo de excepciones
-            ((Administrador) usuarioActual).crearTarea(/*Otros parámetros a considerar*/usuarioDestino, descripcion, fechaEstimadaInicio, fechaEstimadaFin); // TODO: manejo de excepciones
-            /* TODO: código para volver a intentar o cancelar operación */
-        }
-    }
-    /**
-     * Encuentra al usuario con el nickname que pasa como parámetro.
-     * @param nickname Nombre de usuario del usuario que se busca.
-     * @return Al usuario si este existe y {@code null} si no.
-     */
-    @SuppressWarnings("unchecked")
-    public static Usuario getUsuario(String nickname) {
-        for (Usuario usuario : listaUsuarios) {
-            if (usuario.getNickname().equals(nickname)) {
-                return usuario;
-            }
-        }
-        return null;
-    }
+    
 }

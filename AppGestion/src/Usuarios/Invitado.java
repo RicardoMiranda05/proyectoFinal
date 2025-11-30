@@ -27,6 +27,6 @@ public class Invitado extends Usuario {
         System.out.println("Función verTareas(user) aún no disponible.");
     }
     public TipoUsuario getTipo() {
-        return TipoUsuario.ADMINISTRADOR;
+        return TipoUsuario.INVITADO;
     }
 }
