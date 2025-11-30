@@ -1,5 +1,7 @@
 package estados;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -14,6 +16,33 @@ import recursos.ScannerHelper;
  * @author Brayan Montiel Ramírez.
  */
 public class MetodosGenerales {
+    /**
+     * Lee la fecha introducida en consola con un formato DD/MM/AAAA.
+     * @param s : Método de comunicación del usuario.
+     * @return La fecha que se ingresó o {@code null} si no se introdujo en un formato
+     * válido.
+     * @throws DateTimeException Si la fecha no existe en el calendario.
+     */
+    public static LocalDate leerFecha(Scanner s) throws DateTimeException {
+        int year;
+        int month;
+        int day;
+        String date = s.nextLine();
+        if (date.length() != 10) {
+            return null;
+        }
+        if (date.charAt(2) != '/' || date.charAt(5) != '/') {
+            return null;
+        }
+        try {
+            year = Integer.parseInt(date.substring(6, 10));
+            month = Integer.parseInt(date.substring(3, 5));
+            day = Integer.parseInt(date.substring(0, 2));
+        } catch (Exception e) {
+            return null;
+        }
+        return LocalDate.of(year, month, day);
+    }
     /**
      * Solicita al usuario confirmar la operación reciente, para mayor seguridad.
      * @param s Teclado con el que se comunica el usuario.

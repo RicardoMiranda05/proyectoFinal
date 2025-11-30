@@ -72,7 +72,6 @@ public class EstadoCrearTarea extends Estado {
      * Solicita el usuario al que se le asignará la tarea.
      * @param s : Método de comunicación con el usuario que usa la App.
      * @return : El usuario destino si existe dentro de la lista de usuarios o {@code null} si no.
-     * @throws Exception Desde el método "repetirOperación".
      */
     private Usuario solicitarUsuarioDestino(Scanner s) {
         Usuario usuarioDestino;
@@ -80,7 +79,7 @@ public class EstadoCrearTarea extends Estado {
         System.out.print("Nombre de usuario: ");
         s.nextLine();
         String nickname = s.nextLine(); // TODO: OPCIONAL manejo de excepciones long.
-        usuarioDestino = getUsuario(nickname);
+        usuarioDestino = AppComunicador.getInstancia().getUsuario(nickname);
         return usuarioDestino;
     }
     /**
@@ -101,7 +100,7 @@ public class EstadoCrearTarea extends Estado {
         while (true) {
             try {
                 System.out.print("Fecha estimada de inicio (DD/MM/AAAA):");
-                fechaEstimadaInicio = leerFecha(s);
+                fechaEstimadaInicio = MetodosGenerales.leerFecha(s);
                 if (fechaEstimadaInicio == null) {
                     System.out.println("Formato de fecha no válido, intente de nuevo.");
                     continue;
@@ -122,7 +121,7 @@ public class EstadoCrearTarea extends Estado {
         while (true) {
             try {
                 System.out.print("Fecha estimada de fin (DD/MM/AAAA):");
-                fechaEstimadaFin = leerFecha(s); // TODO: manejo de excepciones
+                fechaEstimadaFin = MetodosGenerales.leerFecha(s); // TODO: manejo de excepciones
                 if (fechaEstimadaFin == null) {
                     System.out.println("Formato de fecha no válido, intente de nuevo.");
                     continue;
@@ -142,40 +141,6 @@ public class EstadoCrearTarea extends Estado {
             return true;
         }
         return false;
-    }
-    private LocalDate leerFecha(Scanner s) throws DateTimeException {
-        int year;
-        int month;
-        int day;
-        String date = s.nextLine();
-        if (date.length() != 10) {
-            return null;
-        }
-        if (date.charAt(2) != '/' || date.charAt(5) != '/') {
-            return null;
-        }
-        try {
-            year = Integer.parseInt(date.substring(6, 10));
-            month = Integer.parseInt(date.substring(3, 5));
-            day = Integer.parseInt(date.substring(0, 2));
-        } catch (Exception e) {
-            return null;
-        }
-        return LocalDate.of(year, month, day);
-    }
-    /**
-     * Encuentra al usuario con el nickname que pasa como parámetro.
-     * @param nickname : Nombre de usuario del usuario que se busca.
-     * @return : Al usuario si este existe y {@code null} si no.
-     */
-    private Usuario getUsuario(String nickname) {
-        List<Usuario> listaUsuarios = AppComunicador.getInstancia().getListaUsuarios();
-        for (Usuario usuario : listaUsuarios) {
-            if (usuario.getNickname().equals(nickname)) {
-                return usuario;
-            }
-        }
-        return null;
     }
     /* ----- CONSTRUCTOR ----- */
     public EstadoCrearTarea() {

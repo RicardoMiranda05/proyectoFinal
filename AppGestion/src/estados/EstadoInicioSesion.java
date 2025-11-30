@@ -14,7 +14,7 @@ public class EstadoInicioSesion extends Estado {
     public Estado ejecutar(Scanner s) throws Exception{
         if (validaCredenciales(s)) {
             System.out.println("Credenciales válidas." +
-                                "\n¡Bienvenido" + AppComunicador.getInstancia().getUsuarioActual().getNickname() + "!");
+                                "\n¡Bienvenido " + AppComunicador.getInstancia().getUsuarioActual().getNickname() + "!");
             return new EstadoUsoGeneral();
         } else {
             System.out.print("\nLas credenciales ingresadas no son válidas.");
