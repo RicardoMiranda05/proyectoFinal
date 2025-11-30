@@ -1,5 +1,5 @@
-datos/lista_tareas.dat
-datos/usuarios.dat
+AppGestion/datos/lista_tareas.dat
+AppGestion/datos/usuarios.dat
 
 bin/
 *.class
