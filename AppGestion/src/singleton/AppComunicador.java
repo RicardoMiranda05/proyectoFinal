@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import estados.Estado;
 import tareas.ListaTareas;
 import usuarios.Usuario;
 /**
@@ -26,6 +27,7 @@ public class AppComunicador {
     private Usuario usuarioActual; // El usuario que corre la App.
     private ListaTareas listaTareas;
     private List<Usuario> listaUsuarios;
+    private Estado estadoPrevio = null;
     /* ----- REFERENCIAS PARA FUNCIONAMIENTO ----- */
     /**
      * Cierra el Singleton y guarda los cambios.
@@ -34,8 +36,13 @@ public class AppComunicador {
         if (closed) {
             throw new SingletonClosedException();
         }
-        listaTareas.guardarEnArchivo(listaTareas_dir);
-        guardarUsuariosEn(listaUsuarios_dir);
+        if (listaTareas != null) {
+            // TODO: Decidir si es mejor una verificación por longitud no nula de la lista en lugar de null. 
+            listaTareas.guardarEnArchivo(listaTareas_dir);
+        }
+        if (listaUsuarios != null) {
+            guardarUsuariosEn(listaUsuarios_dir);
+        }
         closed = true;
     }
     /**
@@ -62,8 +69,6 @@ public class AppComunicador {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
             Object obj = ois.readObject();
             ois.close();
-            System.out.println("Condición: " + (obj instanceof ArrayList<?>));
-            System.out.println(obj);
             if (obj instanceof ArrayList<?>) {
                 return (ArrayList<Usuario>) obj;
             }
@@ -101,7 +106,26 @@ public class AppComunicador {
         }
         this.listaUsuarios = listaUsuarios;
     }
+    /**
+     * Encuentra al usuario con el nickname que pasa como parámetro.
+     * @param nickname : Nombre de usuario del usuario que se busca.
+     * @return : Al usuario si este existe y {@code null} si no.
+     */
+    public Usuario getUsuario(String nickname) {
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario.getNickname().equals(nickname)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
     /* ----- ACCESO ----- */
+    public Estado getEstadoPrevio() {
+        return estadoPrevio;
+    }
+    public void setEstadoPrevio(Estado nuevoEstado) {
+        estadoPrevio = nuevoEstado;
+    }
     /* ----- CONSTRUCTOR ----- */
     private AppComunicador() {
         listaTareas = ListaTareas.cargarDesdeArchivo(listaTareas_dir);

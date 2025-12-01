@@ -34,19 +34,7 @@ public class EstadoInicioApp extends Estado {
     public Estado ejecutar(Scanner s) throws Exception {
         MenuInicioApp menuInicio = new MenuInicioApp();
         menuInicio.close();
-        while (true) {
-            try {
-                System.out.println();
-                System.out.println("Seleccione la opción deseada: ");
-                System.out.println(menuInicio);
-                System.out.println();
-                char identificador = ScannerHelper.leerChar(s);
-                menuInicio.setEleccion(identificador);
-                break;
-            } catch (InvalidCharException | NoSuchElementException | IdNoEncontradoException e) {
-                System.out.println("Opción no válida. Intente de nuevo.");
-            }
-        }
+        MetodosGenerales.solicitaEntrada(s, menuInicio, "Seleccione la opción deseada: ");
         /* ----- CAMBIO DE ESTADO ----- */
         switch (menuInicio.getEleccion().getIdentificador()) {
             case '1':

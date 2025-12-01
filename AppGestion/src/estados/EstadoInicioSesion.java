@@ -14,10 +14,10 @@ public class EstadoInicioSesion extends Estado {
     public Estado ejecutar(Scanner s) throws Exception{
         if (validaCredenciales(s)) {
             System.out.println("Credenciales válidas." +
-                                "\n¡Bienvenido" + AppComunicador.getInstancia().getUsuarioActual().getNickname() + "!");
+                                "\n¡Bienvenido " + AppComunicador.getInstancia().getUsuarioActual().getNickname() + "!");
             return new EstadoUsoGeneral();
         } else {
-            System.out.println("Las credenciales ingresadas no son válidas.");
+            System.out.print("\nLas credenciales ingresadas no son válidas.");
             /* Se pregunta si se quiere repetir la operación */
             if (! MetodosGenerales.repetirOperacion(s)) {
                 return new EstadoInicioApp();
@@ -35,8 +35,8 @@ public class EstadoInicioSesion extends Estado {
     public static boolean validaCredenciales(Scanner s) {
         System.out.println("Ingrese su correo/nombre de usuario y su contraseña.");
         System.out.print("Correo/Nombre de usuario: ");
-        String emailNickname = s.next(); //TODO: OPCIONAL manejo de excepciones Long.
-
+        s.nextLine();
+        String emailNickname = s.nextLine(); //TODO: OPCIONAL manejo de excepciones Long.
         for (Usuario usuario : AppComunicador.getInstancia().getListaUsuarios()) {
             /* Optimización de búsqueda */
             if (usuario.getEmail().equals(emailNickname) || usuario.getNickname().equals(emailNickname)) {
@@ -48,7 +48,6 @@ public class EstadoInicioSesion extends Estado {
                     } catch (SingletonClosedException sce) {
                         System.out.println("El singleton no debió ser cerrado hasta el final del programa.");
                     }
-                    System.out.println("Usuario ingresado: " + AppComunicador.getInstancia().getUsuarioActual());
                     return true;
                 } else {
                     return false;

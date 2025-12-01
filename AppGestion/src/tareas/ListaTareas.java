@@ -206,7 +206,7 @@ public class ListaTareas implements Serializable {
      *  - Desarrollador solo puede cambiar sus tareas.
      *  - Invitado no puede cambiar estados.
      */
-    public void cambiarEstado(Usuario actor, String idTarea, EstadoTarea nuevoEstado) {
+    public void cambiarEstado(Usuario actor, String idTarea, EstadoTarea nuevoEstado) throws IllegalArgumentException {
         Tarea tarea = buscarPorId(idTarea);
         if (tarea == null) {
             throw new IllegalArgumentException("La tarea con ID " + idTarea + " no existe.");

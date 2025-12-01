@@ -1,3 +1,6 @@
+AppGestion/datos/lista_tareas.dat
+AppGestion/datos/usuarios.dat
+
 bin/
 *.class
 

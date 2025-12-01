@@ -51,19 +51,31 @@ public class EstadoAgregarUsuario extends Estado {
      * @return {@code true} si se agregó al usuario a la lista de usuarios y {@code false} si no.
      */
     private boolean agregaUsuario(Scanner s) throws Exception {
+        List<Usuario> usuarios = AppComunicador.getInstancia().getListaUsuarios();
         System.out.print("Nombre: ");
-        String nombre = s.next();
-        System.out.println();
-        System.out.print("Nombre de usuario: ");
-        String nickname = s.next();
-        System.out.println();
+        s.nextLine();
+        String nombre = s.nextLine();
+        String nickname;
+        boolean existeNickname;
+        do {
+            existeNickname = false;
+            System.out.print("Nombre de usuario: ");
+            nickname = s.nextLine();
+            for (Usuario usuario : usuarios) {
+                if (nickname.equals(usuario.getNickname())) {
+                    existeNickname = true;
+                    System.out.println("Ya existe un usuario con el nombre de usuario ingresado. " +
+                                        "Por favor, ingrese uno diferente."
+                    );
+                    break;
+                }
+            }
+        } while (existeNickname);
         System.out.print("Correo electrónico: ");
-        String email = s.next();
-        System.out.println();
+        String email = s.nextLine();
         System.out.print("Contraseña: ");
-        String password = s.next();
-        System.out.println();
-        TipoUsuario rol = null;
+        String password = s.nextLine();
+        TipoUsuario rol;
         MenuRoles menuRoles = new MenuRoles();
         menuRoles.close();
         MetodosGenerales.solicitaEntrada(s, menuRoles, "¿Qué rol le asigna?");
@@ -82,12 +94,10 @@ public class EstadoAgregarUsuario extends Estado {
         }
 
         try {
-            if (usuarioConfirma(s)) {
-                // Aquí usamos el singleton SOLO desde el estado 
+            if (MetodosGenerales.usuarioConfirma(s)) {
                 Administrador admin = (Administrador) AppComunicador.getInstancia().getUsuarioActual();
-                List<Usuario> lista = AppComunicador.getInstancia().getListaUsuarios();
 
-                admin.agregarUsuario(lista, nombre, nickname, email, password, rol);
+                admin.agregarUsuario(usuarios, nombre, nickname, email, password, rol);
                 return true; // <--- Si se añade.
             }
         } catch (UsuarioExisteException uee) {
@@ -111,22 +121,6 @@ public class EstadoAgregarUsuario extends Estado {
         }
 
         return false; //<--- Si no se añade.
-    }
-    /**
-     * Solicita al usuario confirmar la operación reciente, para mayor seguridad.
-     * @param s Teclado con el que se comunica el usuario.
-     * @return {@code true} si el usuario confirma y {@code false} si no.
-     */
-    private boolean usuarioConfirma(Scanner s) throws Exception {
-        MenuConfirmacion menuConfirmacion = new MenuConfirmacion();
-        menuConfirmacion.close();
-        MetodosGenerales.solicitaEntrada(s, menuConfirmacion, "¿Desea confirmar la operación?");
-        if (menuConfirmacion.getEleccion().getIdentificador() == MenuConfirmacion.IDENTIFICADOR_CONFIRMAR) {
-            return true;
-        } else {
-            System.out.println("La operación fue cancelada.");
-            return false;
-        }
     }
     /* ----- CONSTRUCTOR ----- */
     public EstadoAgregarUsuario() {

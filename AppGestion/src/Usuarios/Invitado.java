@@ -1,4 +1,7 @@
 package usuarios;
+
+import recursos.TipoUsuario;
+
 /**
  * ----- Mensaje genérico -----
  * Clase administrada sólo por FERNANDA.
@@ -14,5 +17,16 @@ package usuarios;
  * INSERTA TU PROPIO COMENTARIO DE LA CLASE.
  */
 public class Invitado extends Usuario {
-    
+    public Invitado(String nombre, String nickname, String email, String password) {
+        super(nombre, nickname, email, password);
+    }
+
+    // ---- IMPLEMENTACIÓN DE MÉTODOS ABSTRACTOS ----
+    public void verTareas(Usuario user) {
+        // Se implementará cuando Ricardo termine ListaTareas
+        System.out.println("Función verTareas(user) aún no disponible.");
+    }
+    public TipoUsuario getTipo() {
+        return TipoUsuario.INVITADO;
+    }
 }
