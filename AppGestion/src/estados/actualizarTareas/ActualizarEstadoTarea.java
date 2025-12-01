@@ -49,7 +49,7 @@ public class ActualizarEstadoTarea extends EstadoActualizarTareas {
             default:
                 throw new Exception("Estado de la tarea no identificado.");
         }
-        return new EstadoActualizarTareas();
+        return new EstadoActualizarTareas(getIdTarea());
     }
     public ActualizarEstadoTarea(String idTarea) {
         super(EstadosApp.ACTUALIZAR_ESTADO_TAREA, idTarea);

@@ -80,12 +80,7 @@ public class EstadoActualizarTareas extends Estado {
                     case '2':
                         return new ActualizarUsuarioTarea(idTarea);
                     case '3':
-                        String nuevaDescripcion;
-                        System.out.println("Ingrese la nueva descripción de su tarea:");
-                        nuevaDescripcion = s.nextLine(); //TODO: OPCIONAL excepciones long.
-                        listaTareas.actualizarDescripcion(usuarioActual, idTarea, nuevaDescripcion);
-                        System.out.println("Su descripción se ha actualizado.");
-                        return new EstadoActualizarTareas();
+                        return new ActualizarDescripcionTarea(idTarea);
                     case '4':
                         break;
                     case '5':
@@ -104,35 +99,7 @@ public class EstadoActualizarTareas extends Estado {
                     System.out.println("La tarea no ha sido creada.");
                     operacionCancelada = ! MetodosGenerales.repetirOperacion(s);
                 } while (! operacionCancelada);
-                
-                return new EstadoUsoGeneral();
-                System.out.println("Ingrese el id de la tarea que desea modificar");
-                String id = s.nextLine(); //TODO: manejo de excepciones
-                listaTareas.imprimeTarea(id);
-                MenuActualizacionAdmin menuActAdmin = new MenuActualizacionAdmin();
-                System.out.println(menuActAdmin);
-                System.out.println("¿Qué desea modificar?");
-                menuActAdmin.setEleccion(s.nextLine().charAt(0)); //TODO: manejo de excepciones
-                switch (menuActAdmin.getEleccion()) {
-                    case MenuActualizacionAdmin.OPCION_ESTADO:
-                        System.out.println("¿A qué estado pasará la tarea?");
-                        EstadoTarea nuevoEstado = getEleccionEstado(s); // TODO: manejo de excepciones
-                        listaTareas.cambiarEstado(usuarioActual, id, nuevoEstado); // TODO: manejo de excepciones
-                        break;
-                    case MenuActualizacionAdmin.OPCION_USUARIO:
-                        System.out.println("Ingrese el nickname del usuario al que le será asignada:");
-                        String nickname = s.nextLine(); //TODO: manejo de excepciones
-                        Usuario nuevoUsuario = getUsuario(nickname); // TODO: manejo de excepciones
-                        if (nuevoEstado != null) {
-                            System.out.println("La tarea ha sido reasignada a " + nuevoUsuario.getNickname());
-                            listaTareas.cambiarUsuarioAsignado(usuarioActual, id, nuevoUsuario);
-                        }
-                        break;
-                    case MenuActualizacionAdmin.OPCION_DESCRIPCION:
-                        System.out.println("Ingrese la nueva descripción:");
-                        String nuevDescripcion = s.nextLine(); // TODO: manejo de excepciones
-                        listaTareas.actualizarDescripcion(usuarioActual, id, nuevDescripcion); // TODO: manejo de excepciones
-                        break;
+                /*  PARA ABAJO NO ES VÁLIDO */
                     case MenuActualizacionAdmin.OPCION_FECHA_INICIO:
                         System.out.println("Ingrese la nueva fecha estimada de inicio:");
                         String nuevaFechaInicio = s.nextLine(); // TODO: manejo de excepciones

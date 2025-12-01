@@ -97,45 +97,15 @@ public class EstadoCrearTarea extends Estado {
         LocalDate fechaEstimadaFin;
         LocalDate hoy = LocalDate.now();
         /* Fecha estimada de inicio */
-        while (true) {
-            try {
-                System.out.print("Fecha estimada de inicio (DD/MM/AAAA):");
-                fechaEstimadaInicio = MetodosGenerales.leerFecha(s);
-                if (fechaEstimadaInicio == null) {
-                    System.out.println("Formato de fecha no válido, intente de nuevo.");
-                    continue;
-                }
-                if (fechaEstimadaInicio.isBefore(hoy)) {
-                    System.out.println("La fecha estimada de inicio no puede ser anterior a hoy.");
-                    System.out.println(fechaEstimadaInicio);
-                    System.out.println(hoy);
-                    continue;
-                }
-            } catch (DateTimeException e) {
-                System.out.println("La fecha no existe en el calendario, intente con una fecha válida.");
-                continue;
-            }
-            break;
-        }
+        fechaEstimadaInicio = MetodosGenerales.solicitaFechaDespues(s,
+                                                                    "Fecha estimada de inicio (DD/MM/AAAA):",
+                                                                    hoy, 
+                                                                    "La fecha estimada de inicio no puede ser anterior a hoy.");
         /* Fecha estimada de fin */
-        while (true) {
-            try {
-                System.out.print("Fecha estimada de fin (DD/MM/AAAA):");
-                fechaEstimadaFin = MetodosGenerales.leerFecha(s); // TODO: manejo de excepciones
-                if (fechaEstimadaFin == null) {
-                    System.out.println("Formato de fecha no válido, intente de nuevo.");
-                    continue;
-                }
-                if (fechaEstimadaFin.isBefore(fechaEstimadaInicio)) {
-                    System.out.println("La fecha estimada de fin no puede ser anterior a la de inicio.");
-                    continue;
-                }
-            } catch (DateTimeException e) {
-                System.out.println("La fecha no existe en el calendario, intente con una fecha válida.");
-                continue;
-            }
-            break;
-        }
+        fechaEstimadaFin = MetodosGenerales.solicitaFechaAntes(s,
+                                                                "Fecha estimada de fin (DD/MM/AAAA):",
+                                                                fechaEstimadaInicio, 
+                                                                "La fecha estimada de fin no puede ser anterior a la de inicio.");
         if (MetodosGenerales.usuarioConfirma(s)) {
             listaTareas.crearTarea(usuarioDestino, usuarioActual, descripcion, fechaEstimadaInicio, fechaEstimadaInicio);
             return true;
