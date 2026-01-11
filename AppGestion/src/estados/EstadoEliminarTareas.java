@@ -1,7 +1,6 @@
 package estados;
 
 import java.util.Scanner;
-
 import menues.MenuConfirmacion;
 import recursos.TipoUsuario;
 import singleton.AppComunicador;
